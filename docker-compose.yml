@@ -38,6 +38,17 @@ services:
       - prisma
     volumes:
       - ./:/fs1-satory-back
+#     networks:
+#       - webgateway
+#     deploy:
+#       labels:
+#         traefik.port: '4000'
+#         traefik.frontend.rule: 'Host: api.greefine.app'
+#         traefik.docker.network: 'webgateway'
+
+# networks:
+#   webgateway:
+#     external: true
 
 volumes:
   postgres:
