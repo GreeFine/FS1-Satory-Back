@@ -205,18 +205,9 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface TokenUpdateWithoutUserDataInput {
-  expiration?: Maybe<DateTimeInput>;
-}
-
 export type PostWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface TokenUpdateManyWithWhereNestedInput {
-  where: TokenScalarWhereInput;
-  data: TokenUpdateManyDataInput;
-}
 
 export interface PostWhereInput {
   id?: Maybe<ID_Input>;
@@ -253,197 +244,6 @@ export interface PostWhereInput {
   AND?: Maybe<PostWhereInput[] | PostWhereInput>;
   OR?: Maybe<PostWhereInput[] | PostWhereInput>;
   NOT?: Maybe<PostWhereInput[] | PostWhereInput>;
-}
-
-export interface TokenUpdateManyDataInput {
-  expiration?: Maybe<DateTimeInput>;
-}
-
-export interface TokenWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  expiration?: Maybe<DateTimeInput>;
-  expiration_not?: Maybe<DateTimeInput>;
-  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_lt?: Maybe<DateTimeInput>;
-  expiration_lte?: Maybe<DateTimeInput>;
-  expiration_gt?: Maybe<DateTimeInput>;
-  expiration_gte?: Maybe<DateTimeInput>;
-  user?: Maybe<UserWhereInput>;
-  AND?: Maybe<TokenWhereInput[] | TokenWhereInput>;
-  OR?: Maybe<TokenWhereInput[] | TokenWhereInput>;
-  NOT?: Maybe<TokenWhereInput[] | TokenWhereInput>;
-}
-
-export interface TokenCreateManyWithoutUserInput {
-  create?: Maybe<TokenCreateWithoutUserInput[] | TokenCreateWithoutUserInput>;
-  connect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
-}
-
-export interface PostCreateWithoutAuthorInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  published?: Maybe<Boolean>;
-}
-
-export interface TokenCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  expiration: DateTimeInput;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
-}
-
-export interface PostUpdateInput {
-  title?: Maybe<String>;
-  published?: Maybe<Boolean>;
-  author?: Maybe<UserUpdateOneWithoutPostsInput>;
-}
-
-export interface TokenSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TokenWhereInput>;
-  AND?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
-  OR?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
-  NOT?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
-}
-
-export interface UserUpdateOneWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
-  update?: Maybe<UserUpdateWithoutPostsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: Maybe<String>;
-  password?: Maybe<String>;
-  email?: Maybe<String>;
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  name?: Maybe<String>;
-  password?: Maybe<String>;
-  email?: Maybe<String>;
-  tokens?: Maybe<TokenUpdateManyWithoutUserInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  password: String;
-  email?: Maybe<String>;
-  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
-  tokens?: Maybe<TokenCreateManyWithoutUserInput>;
-}
-
-export interface TokenUpdateManyWithoutUserInput {
-  create?: Maybe<TokenCreateWithoutUserInput[] | TokenCreateWithoutUserInput>;
-  delete?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
-  connect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
-  set?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
-  disconnect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
-  update?: Maybe<
-    | TokenUpdateWithWhereUniqueWithoutUserInput[]
-    | TokenUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | TokenUpsertWithWhereUniqueWithoutUserInput[]
-    | TokenUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
-  updateMany?: Maybe<
-    TokenUpdateManyWithWhereNestedInput[] | TokenUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TokenUpdateManyMutationInput {
-  expiration?: Maybe<DateTimeInput>;
-}
-
-export interface TokenUpdateWithWhereUniqueWithoutUserInput {
-  where: TokenWhereUniqueInput;
-  data: TokenUpdateWithoutUserDataInput;
-}
-
-export interface PostUpdateManyDataInput {
-  title?: Maybe<String>;
-  published?: Maybe<Boolean>;
-}
-
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutAuthorDataInput;
-}
-
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
-}
-
-export interface TokenUpsertWithWhereUniqueWithoutUserInput {
-  where: TokenWhereUniqueInput;
-  update: TokenUpdateWithoutUserDataInput;
-  create: TokenCreateWithoutUserInput;
-}
-
-export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutAuthorDataInput;
-  create: PostCreateWithoutAuthorInput;
-}
-
-export interface TokenScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  expiration?: Maybe<DateTimeInput>;
-  expiration_not?: Maybe<DateTimeInput>;
-  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  expiration_lt?: Maybe<DateTimeInput>;
-  expiration_lte?: Maybe<DateTimeInput>;
-  expiration_gt?: Maybe<DateTimeInput>;
-  expiration_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
-  OR?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
-  NOT?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
-}
-
-export interface UserCreateOneWithoutPostsInput {
-  create?: Maybe<UserCreateWithoutPostsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserWhereInput {
@@ -514,15 +314,225 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+export interface TokenWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  expiration?: Maybe<DateTimeInput>;
+  expiration_not?: Maybe<DateTimeInput>;
+  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_lt?: Maybe<DateTimeInput>;
+  expiration_lte?: Maybe<DateTimeInput>;
+  expiration_gt?: Maybe<DateTimeInput>;
+  expiration_gte?: Maybe<DateTimeInput>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<TokenWhereInput[] | TokenWhereInput>;
+  OR?: Maybe<TokenWhereInput[] | TokenWhereInput>;
+  NOT?: Maybe<TokenWhereInput[] | TokenWhereInput>;
+}
+
+export type TokenWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export interface PostCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  published?: Maybe<Boolean>;
+  author?: Maybe<UserCreateOneWithoutPostsInput>;
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPostsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  password: String;
+  email?: Maybe<String>;
+  tokens?: Maybe<TokenCreateManyWithoutUserInput>;
+}
+
+export interface TokenCreateManyWithoutUserInput {
+  create?: Maybe<TokenCreateWithoutUserInput[] | TokenCreateWithoutUserInput>;
+  connect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
+}
+
+export interface TokenCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  expiration: DateTimeInput;
+}
+
+export interface PostUpdateInput {
+  title?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  author?: Maybe<UserUpdateOneWithoutPostsInput>;
+}
+
+export interface UserUpdateOneWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  update?: Maybe<UserUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPostsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutPostsDataInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  tokens?: Maybe<TokenUpdateManyWithoutUserInput>;
+}
+
+export interface TokenUpdateManyWithoutUserInput {
+  create?: Maybe<TokenCreateWithoutUserInput[] | TokenCreateWithoutUserInput>;
+  delete?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
+  connect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
+  set?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
+  disconnect?: Maybe<TokenWhereUniqueInput[] | TokenWhereUniqueInput>;
+  update?: Maybe<
+    | TokenUpdateWithWhereUniqueWithoutUserInput[]
+    | TokenUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | TokenUpsertWithWhereUniqueWithoutUserInput[]
+    | TokenUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
+  updateMany?: Maybe<
+    TokenUpdateManyWithWhereNestedInput[] | TokenUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface TokenUpdateWithWhereUniqueWithoutUserInput {
+  where: TokenWhereUniqueInput;
+  data: TokenUpdateWithoutUserDataInput;
+}
+
+export interface TokenUpdateWithoutUserDataInput {
+  expiration?: Maybe<DateTimeInput>;
+}
+
+export interface TokenUpsertWithWhereUniqueWithoutUserInput {
+  where: TokenWhereUniqueInput;
+  update: TokenUpdateWithoutUserDataInput;
+  create: TokenCreateWithoutUserInput;
+}
+
+export interface TokenScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  expiration?: Maybe<DateTimeInput>;
+  expiration_not?: Maybe<DateTimeInput>;
+  expiration_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  expiration_lt?: Maybe<DateTimeInput>;
+  expiration_lte?: Maybe<DateTimeInput>;
+  expiration_gt?: Maybe<DateTimeInput>;
+  expiration_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
+  OR?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
+  NOT?: Maybe<TokenScalarWhereInput[] | TokenScalarWhereInput>;
+}
+
+export interface TokenUpdateManyWithWhereNestedInput {
+  where: TokenScalarWhereInput;
+  data: TokenUpdateManyDataInput;
+}
+
+export interface TokenUpdateManyDataInput {
+  expiration?: Maybe<DateTimeInput>;
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpdateManyMutationInput {
+  title?: Maybe<String>;
+  published?: Maybe<Boolean>;
+}
+
+export interface TokenCreateInput {
+  id?: Maybe<ID_Input>;
+  expiration: DateTimeInput;
+  user: UserCreateOneWithoutTokensInput;
+}
+
+export interface UserCreateOneWithoutTokensInput {
+  create?: Maybe<UserCreateWithoutTokensInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutTokensInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  password: String;
+  email?: Maybe<String>;
+  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+}
+
+export interface PostCreateManyWithoutAuthorInput {
+  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+}
+
+export interface PostCreateWithoutAuthorInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  published?: Maybe<Boolean>;
+}
+
+export interface TokenUpdateInput {
+  expiration?: Maybe<DateTimeInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTokensInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutTokensInput {
+  create?: Maybe<UserCreateWithoutTokensInput>;
+  update?: Maybe<UserUpdateWithoutTokensDataInput>;
+  upsert?: Maybe<UserUpsertWithoutTokensInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutTokensDataInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
 }
 
 export interface PostUpdateManyWithoutAuthorInput {
@@ -545,29 +555,20 @@ export interface PostUpdateManyWithoutAuthorInput {
   >;
 }
 
-export interface UserUpdateInput {
-  name?: Maybe<String>;
-  password?: Maybe<String>;
-  email?: Maybe<String>;
-  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
-  tokens?: Maybe<TokenUpdateManyWithoutUserInput>;
+export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutAuthorDataInput;
 }
 
-export interface UserUpdateWithoutTokensDataInput {
-  name?: Maybe<String>;
-  password?: Maybe<String>;
-  email?: Maybe<String>;
-  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
-}
-
-export interface UserUpsertWithoutTokensInput {
-  update: UserUpdateWithoutTokensDataInput;
-  create: UserCreateWithoutTokensInput;
-}
-
-export interface PostUpdateManyMutationInput {
+export interface PostUpdateWithoutAuthorDataInput {
   title?: Maybe<String>;
   published?: Maybe<Boolean>;
+}
+
+export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateWithoutAuthorDataInput;
+  create: PostCreateWithoutAuthorInput;
 }
 
 export interface PostScalarWhereInput {
@@ -606,23 +607,46 @@ export interface PostScalarWhereInput {
   NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
 }
 
-export interface UserUpdateOneRequiredWithoutTokensInput {
-  create?: Maybe<UserCreateWithoutTokensInput>;
-  update?: Maybe<UserUpdateWithoutTokensDataInput>;
-  upsert?: Maybe<UserUpsertWithoutTokensInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
+export interface PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput;
+  data: PostUpdateManyDataInput;
 }
 
-export interface PostCreateInput {
-  id?: Maybe<ID_Input>;
-  title: String;
+export interface PostUpdateManyDataInput {
+  title?: Maybe<String>;
   published?: Maybe<Boolean>;
-  author?: Maybe<UserCreateOneWithoutPostsInput>;
 }
 
-export interface TokenUpdateInput {
+export interface UserUpsertWithoutTokensInput {
+  update: UserUpdateWithoutTokensDataInput;
+  create: UserCreateWithoutTokensInput;
+}
+
+export interface TokenUpdateManyMutationInput {
   expiration?: Maybe<DateTimeInput>;
-  user?: Maybe<UserUpdateOneRequiredWithoutTokensInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  password: String;
+  email?: Maybe<String>;
+  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+  tokens?: Maybe<TokenCreateManyWithoutUserInput>;
+}
+
+export interface UserUpdateInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
+  tokens?: Maybe<TokenUpdateManyWithoutUserInput>;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -636,95 +660,61 @@ export interface PostSubscriptionWhereInput {
   NOT?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
 }
 
-export interface PostCreateManyWithoutAuthorInput {
-  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
-  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+export interface TokenSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TokenWhereInput>;
+  AND?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
+  OR?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
+  NOT?: Maybe<TokenSubscriptionWhereInput[] | TokenSubscriptionWhereInput>;
 }
 
-export interface UserCreateWithoutTokensInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  password: String;
-  email?: Maybe<String>;
-  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
-
-export interface UserCreateOneWithoutTokensInput {
-  create?: Maybe<UserCreateWithoutTokensInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface TokenCreateInput {
-  id?: Maybe<ID_Input>;
-  expiration: DateTimeInput;
-  user: UserCreateOneWithoutTokensInput;
-}
-
-export type TokenWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UserCreateWithoutPostsInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  password: String;
-  email?: Maybe<String>;
-  tokens?: Maybe<TokenCreateManyWithoutUserInput>;
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  title?: Maybe<String>;
-  published?: Maybe<Boolean>;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface UserPreviousValues {
+export interface Post {
   id: ID_Output;
-  name: String;
-  password: String;
-  email?: String;
+  title: String;
+  published: Boolean;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
+export interface PostPromise extends Promise<Post>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  password: () => Promise<String>;
-  email: () => Promise<String>;
+  title: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  author: <T = UserPromise>() => T;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface PostSubscription
+  extends Promise<AsyncIterator<Post>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  author: <T = UserSubscription>() => T;
 }
 
-export interface AggregatePost {
-  count: Int;
-}
-
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
+export interface PostNullablePromise
+  extends Promise<Post | null>,
     Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  published: () => Promise<Boolean>;
+  author: <T = UserPromise>() => T;
 }
 
 export interface User {
@@ -813,27 +803,6 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface TokenConnection {
-  pageInfo: PageInfo;
-  edges: TokenEdge[];
-}
-
-export interface TokenConnectionPromise
-  extends Promise<TokenConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TokenEdge>>() => T;
-  aggregate: <T = AggregateTokenPromise>() => T;
-}
-
-export interface TokenConnectionSubscription
-  extends Promise<AsyncIterator<TokenConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TokenEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTokenSubscription>() => T;
-}
-
 export interface Token {
   id: ID_Output;
   expiration: DateTimeOutput;
@@ -861,78 +830,25 @@ export interface TokenNullablePromise
   user: <T = UserPromise>() => T;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface PostConnection {
+  pageInfo: PageInfo;
+  edges: PostEdge[];
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
     Fragmentable {
-  count: () => Promise<Long>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface PostEdge {
-  node: Post;
-  cursor: String;
-}
-
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
-    Fragmentable {
-  node: <T = PostSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TokenSubscriptionPayload {
-  mutation: MutationType;
-  node: Token;
-  updatedFields: String[];
-  previousValues: TokenPreviousValues;
-}
-
-export interface TokenSubscriptionPayloadPromise
-  extends Promise<TokenSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TokenPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TokenPreviousValuesPromise>() => T;
-}
-
-export interface TokenSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TokenSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TokenSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TokenPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -958,6 +874,93 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface PostEdge {
+  node: Post;
+  cursor: String;
+}
+
+export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
+  node: <T = PostPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PostEdgeSubscription
+  extends Promise<AsyncIterator<PostEdge>>,
+    Fragmentable {
+  node: <T = PostSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePost {
+  count: Int;
+}
+
+export interface AggregatePostPromise
+  extends Promise<AggregatePost>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePostSubscription
+  extends Promise<AsyncIterator<AggregatePost>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TokenConnection {
+  pageInfo: PageInfo;
+  edges: TokenEdge[];
+}
+
+export interface TokenConnectionPromise
+  extends Promise<TokenConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TokenEdge>>() => T;
+  aggregate: <T = AggregateTokenPromise>() => T;
+}
+
+export interface TokenConnectionSubscription
+  extends Promise<AsyncIterator<TokenConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TokenEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTokenSubscription>() => T;
+}
+
+export interface TokenEdge {
+  node: Token;
+  cursor: String;
+}
+
+export interface TokenEdgePromise extends Promise<TokenEdge>, Fragmentable {
+  node: <T = TokenPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TokenEdgeSubscription
+  extends Promise<AsyncIterator<TokenEdge>>,
+    Fragmentable {
+  node: <T = TokenSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateToken {
+  count: Int;
+}
+
+export interface AggregateTokenPromise
+  extends Promise<AggregateToken>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTokenSubscription
+  extends Promise<AsyncIterator<AggregateToken>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
@@ -979,42 +982,53 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface AggregateToken {
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
   count: Int;
 }
 
-export interface AggregateTokenPromise
-  extends Promise<AggregateToken>,
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateTokenSubscription
-  extends Promise<AsyncIterator<AggregateToken>>,
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface PostPreviousValues {
-  id: ID_Output;
-  title: String;
-  published: Boolean;
+export interface BatchPayload {
+  count: Long;
 }
 
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  published: () => Promise<Boolean>;
+  count: () => Promise<Long>;
 }
 
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface PostSubscriptionPayload {
@@ -1042,73 +1056,51 @@ export interface PostSubscriptionPayloadSubscription
   previousValues: <T = PostPreviousValuesSubscription>() => T;
 }
 
-export interface Post {
+export interface PostPreviousValues {
   id: ID_Output;
   title: String;
   published: Boolean;
 }
 
-export interface PostPromise extends Promise<Post>, Fragmentable {
+export interface PostPreviousValuesPromise
+  extends Promise<PostPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   published: () => Promise<Boolean>;
-  author: <T = UserPromise>() => T;
 }
 
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
+export interface PostPreviousValuesSubscription
+  extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   published: () => Promise<AsyncIterator<Boolean>>;
-  author: <T = UserSubscription>() => T;
 }
 
-export interface PostNullablePromise
-  extends Promise<Post | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  published: () => Promise<Boolean>;
-  author: <T = UserPromise>() => T;
-}
-
-export interface PostConnection {
-  pageInfo: PageInfo;
-  edges: PostEdge[];
-}
-
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
-}
-
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
-}
-
-export interface TokenEdge {
+export interface TokenSubscriptionPayload {
+  mutation: MutationType;
   node: Token;
-  cursor: String;
+  updatedFields: String[];
+  previousValues: TokenPreviousValues;
 }
 
-export interface TokenEdgePromise extends Promise<TokenEdge>, Fragmentable {
-  node: <T = TokenPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TokenEdgeSubscription
-  extends Promise<AsyncIterator<TokenEdge>>,
+export interface TokenSubscriptionPayloadPromise
+  extends Promise<TokenSubscriptionPayload>,
     Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TokenPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TokenPreviousValuesPromise>() => T;
+}
+
+export interface TokenSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TokenSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = TokenSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TokenPreviousValuesSubscription>() => T;
 }
 
 export interface TokenPreviousValues {
@@ -1128,23 +1120,6 @@ export interface TokenPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   expiration: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -1172,12 +1147,30 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export type Long = string;
+export interface UserPreviousValues {
+  id: ID_Output;
+  name: String;
+  password: String;
+  email?: String;
+}
 
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  password: () => Promise<String>;
+  email: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+}
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -1186,14 +1179,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1204,6 +1197,13 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+export type Long = string;
 
 /**
  * Model Metadata
