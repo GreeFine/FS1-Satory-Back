@@ -3,7 +3,15 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregatePost {
+  count: Int!
+}
+
+type AggregateToken {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -11,9 +19,23 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
+  createPost(data: PostCreateInput!): Post!
+  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
+  upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
+  deletePost(where: PostWhereUniqueInput!): Post
+  deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createToken(data: TokenCreateInput!): Token!
+  updateToken(data: TokenUpdateInput!, where: TokenWhereUniqueInput!): Token
+  updateManyTokens(data: TokenUpdateManyMutationInput!, where: TokenWhereInput): BatchPayload!
+  upsertToken(where: TokenWhereUniqueInput!, create: TokenCreateInput!, update: TokenUpdateInput!): Token!
+  deleteToken(where: TokenWhereUniqueInput!): Token
+  deleteManyTokens(where: TokenWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -39,7 +61,208 @@ type PageInfo {
   endCursor: String
 }
 
+type Post {
+  id: ID!
+  title: String!
+  published: Boolean!
+  author: User
+}
+
+type PostConnection {
+  pageInfo: PageInfo!
+  edges: [PostEdge]!
+  aggregate: AggregatePost!
+}
+
+input PostCreateInput {
+  id: ID
+  title: String!
+  published: Boolean
+  author: UserCreateOneWithoutPostsInput
+}
+
+input PostCreateManyWithoutAuthorInput {
+  create: [PostCreateWithoutAuthorInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateWithoutAuthorInput {
+  id: ID
+  title: String!
+  published: Boolean
+}
+
+type PostEdge {
+  node: Post!
+  cursor: String!
+}
+
+enum PostOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  published_ASC
+  published_DESC
+}
+
+type PostPreviousValues {
+  id: ID!
+  title: String!
+  published: Boolean!
+}
+
+input PostScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  published: Boolean
+  published_not: Boolean
+  AND: [PostScalarWhereInput!]
+  OR: [PostScalarWhereInput!]
+  NOT: [PostScalarWhereInput!]
+}
+
+type PostSubscriptionPayload {
+  mutation: MutationType!
+  node: Post
+  updatedFields: [String!]
+  previousValues: PostPreviousValues
+}
+
+input PostSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PostWhereInput
+  AND: [PostSubscriptionWhereInput!]
+  OR: [PostSubscriptionWhereInput!]
+  NOT: [PostSubscriptionWhereInput!]
+}
+
+input PostUpdateInput {
+  title: String
+  published: Boolean
+  author: UserUpdateOneWithoutPostsInput
+}
+
+input PostUpdateManyDataInput {
+  title: String
+  published: Boolean
+}
+
+input PostUpdateManyMutationInput {
+  title: String
+  published: Boolean
+}
+
+input PostUpdateManyWithoutAuthorInput {
+  create: [PostCreateWithoutAuthorInput!]
+  delete: [PostWhereUniqueInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
+  deleteMany: [PostScalarWhereInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+}
+
+input PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput!
+  data: PostUpdateManyDataInput!
+}
+
+input PostUpdateWithoutAuthorDataInput {
+  title: String
+  published: Boolean
+}
+
+input PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutAuthorDataInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutAuthorDataInput!
+  create: PostCreateWithoutAuthorInput!
+}
+
+input PostWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  published: Boolean
+  published_not: Boolean
+  author: UserWhereInput
+  AND: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  NOT: [PostWhereInput!]
+}
+
+input PostWhereUniqueInput {
+  id: ID
+}
+
 type Query {
+  post(where: PostWhereUniqueInput!): Post
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+  postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  token(where: TokenWhereUniqueInput!): Token
+  tokens(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Token]!
+  tokensConnection(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TokenConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,12 +270,187 @@ type Query {
 }
 
 type Subscription {
+  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  token(where: TokenSubscriptionWhereInput): TokenSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Token {
+  id: ID!
+  expiration: DateTime!
+  user: User!
+}
+
+type TokenConnection {
+  pageInfo: PageInfo!
+  edges: [TokenEdge]!
+  aggregate: AggregateToken!
+}
+
+input TokenCreateInput {
+  id: ID
+  expiration: DateTime!
+  user: UserCreateOneWithoutTokensInput!
+}
+
+input TokenCreateManyWithoutUserInput {
+  create: [TokenCreateWithoutUserInput!]
+  connect: [TokenWhereUniqueInput!]
+}
+
+input TokenCreateWithoutUserInput {
+  id: ID
+  expiration: DateTime!
+}
+
+type TokenEdge {
+  node: Token!
+  cursor: String!
+}
+
+enum TokenOrderByInput {
+  id_ASC
+  id_DESC
+  expiration_ASC
+  expiration_DESC
+}
+
+type TokenPreviousValues {
+  id: ID!
+  expiration: DateTime!
+}
+
+input TokenScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  expiration: DateTime
+  expiration_not: DateTime
+  expiration_in: [DateTime!]
+  expiration_not_in: [DateTime!]
+  expiration_lt: DateTime
+  expiration_lte: DateTime
+  expiration_gt: DateTime
+  expiration_gte: DateTime
+  AND: [TokenScalarWhereInput!]
+  OR: [TokenScalarWhereInput!]
+  NOT: [TokenScalarWhereInput!]
+}
+
+type TokenSubscriptionPayload {
+  mutation: MutationType!
+  node: Token
+  updatedFields: [String!]
+  previousValues: TokenPreviousValues
+}
+
+input TokenSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TokenWhereInput
+  AND: [TokenSubscriptionWhereInput!]
+  OR: [TokenSubscriptionWhereInput!]
+  NOT: [TokenSubscriptionWhereInput!]
+}
+
+input TokenUpdateInput {
+  expiration: DateTime
+  user: UserUpdateOneRequiredWithoutTokensInput
+}
+
+input TokenUpdateManyDataInput {
+  expiration: DateTime
+}
+
+input TokenUpdateManyMutationInput {
+  expiration: DateTime
+}
+
+input TokenUpdateManyWithoutUserInput {
+  create: [TokenCreateWithoutUserInput!]
+  delete: [TokenWhereUniqueInput!]
+  connect: [TokenWhereUniqueInput!]
+  set: [TokenWhereUniqueInput!]
+  disconnect: [TokenWhereUniqueInput!]
+  update: [TokenUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [TokenUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [TokenScalarWhereInput!]
+  updateMany: [TokenUpdateManyWithWhereNestedInput!]
+}
+
+input TokenUpdateManyWithWhereNestedInput {
+  where: TokenScalarWhereInput!
+  data: TokenUpdateManyDataInput!
+}
+
+input TokenUpdateWithoutUserDataInput {
+  expiration: DateTime
+}
+
+input TokenUpdateWithWhereUniqueWithoutUserInput {
+  where: TokenWhereUniqueInput!
+  data: TokenUpdateWithoutUserDataInput!
+}
+
+input TokenUpsertWithWhereUniqueWithoutUserInput {
+  where: TokenWhereUniqueInput!
+  update: TokenUpdateWithoutUserDataInput!
+  create: TokenCreateWithoutUserInput!
+}
+
+input TokenWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  expiration: DateTime
+  expiration_not: DateTime
+  expiration_in: [DateTime!]
+  expiration_not_in: [DateTime!]
+  expiration_lt: DateTime
+  expiration_lte: DateTime
+  expiration_gt: DateTime
+  expiration_gte: DateTime
+  user: UserWhereInput
+  AND: [TokenWhereInput!]
+  OR: [TokenWhereInput!]
+  NOT: [TokenWhereInput!]
+}
+
+input TokenWhereUniqueInput {
+  id: ID
 }
 
 type User {
   id: ID!
   name: String!
+  password: String!
+  email: String
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  tokens(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Token!]
 }
 
 type UserConnection {
@@ -64,6 +462,36 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   name: String!
+  password: String!
+  email: String
+  posts: PostCreateManyWithoutAuthorInput
+  tokens: TokenCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutPostsInput {
+  create: UserCreateWithoutPostsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutTokensInput {
+  create: UserCreateWithoutTokensInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutPostsInput {
+  id: ID
+  name: String!
+  password: String!
+  email: String
+  tokens: TokenCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutTokensInput {
+  id: ID
+  name: String!
+  password: String!
+  email: String
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 type UserEdge {
@@ -76,11 +504,17 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  password_ASC
+  password_DESC
+  email_ASC
+  email_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   name: String!
+  password: String!
+  email: String
 }
 
 type UserSubscriptionPayload {
@@ -103,10 +537,56 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   name: String
+  password: String
+  email: String
+  posts: PostUpdateManyWithoutAuthorInput
+  tokens: TokenUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
+  password: String
+  email: String
+}
+
+input UserUpdateOneRequiredWithoutTokensInput {
+  create: UserCreateWithoutTokensInput
+  update: UserUpdateWithoutTokensDataInput
+  upsert: UserUpsertWithoutTokensInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutPostsInput {
+  create: UserCreateWithoutPostsInput
+  update: UserUpdateWithoutPostsDataInput
+  upsert: UserUpsertWithoutPostsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutPostsDataInput {
+  name: String
+  password: String
+  email: String
+  tokens: TokenUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutTokensDataInput {
+  name: String
+  password: String
+  email: String
+  posts: PostUpdateManyWithoutAuthorInput
+}
+
+input UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput!
+  create: UserCreateWithoutPostsInput!
+}
+
+input UserUpsertWithoutTokensInput {
+  update: UserUpdateWithoutTokensDataInput!
+  create: UserCreateWithoutTokensInput!
 }
 
 input UserWhereInput {
@@ -138,6 +618,40 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  posts_every: PostWhereInput
+  posts_some: PostWhereInput
+  posts_none: PostWhereInput
+  tokens_every: TokenWhereInput
+  tokens_some: TokenWhereInput
+  tokens_none: TokenWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -145,6 +659,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
 `
       }
