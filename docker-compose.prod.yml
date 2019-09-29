@@ -3,12 +3,13 @@ services:
   graphql:
     networks:
       - webgateway
+      - default
     deploy:
       labels:
         traefik.port: '4000'
         traefik.frontend.rule: 'Host: api.greefine.app'
         traefik.docker.network: 'webgateway'
 
-  networks:
-    webgateway:
-      external: true
+networks:
+  webgateway:
+    external: true
