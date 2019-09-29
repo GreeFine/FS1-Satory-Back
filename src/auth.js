@@ -5,13 +5,13 @@ const { rule, shield, and, or, not } = require('graphql-shield');
 
 function getRole(req) {
   let token;
-  try {
-    token = jwt.verify(
-      req.request.get('Authorization'),
-      process.env['JWT_SECRET']
-    );
-  } catch (e) {
-    return null;
+  if (req.request.cookies) {
+    const authorization = req.request.cookies.Authorization;
+    try {
+      token = jwt.verify(authorization, process.env['JWT_SECRET']);
+    } catch (e) {
+      return null;
+    }
   }
   return token.role;
 }

@@ -44,11 +44,15 @@ module.exports = {
     });
     return user;
   },
-  createDraft(root, args, context) {
+  logout: async (root, args, context) => {
+    context.response.clearCookie('Authorization');
+    return 'Success';
+  },
+  createDraft(root, { title, userId }, context) {
     return context.prisma.createPost({
-      title: args.title,
+      title: title,
       author: {
-        connect: { id: args.userId },
+        connect: { id: userId },
       },
     });
   },

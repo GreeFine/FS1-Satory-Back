@@ -1,6 +1,7 @@
 type Mutation {
   register(username: String!, password: String!): User!
   login(username: String!, password: String!): LoginResponse!
+  logout: String!
   createUser(name: String!): User!
   createDraft(title: String!, userId: ID!): Post!
   publish(postId: ID!): Post!
