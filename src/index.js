@@ -28,7 +28,7 @@ const server = new GraphQLServer({
 });
 
 var corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:3000',
   credentials: true,
 };
 

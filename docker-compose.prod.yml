@@ -1,6 +1,7 @@
 version: '3'
 services:
   graphql:
+    image: greefine/fs1-satory-back
     networks:
       - webgateway
       - default

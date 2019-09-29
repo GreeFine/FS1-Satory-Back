@@ -9,10 +9,6 @@ var models = [
     embedded: false
   },
   {
-    name: "Token",
-    embedded: false
-  },
-  {
     name: "Post",
     embedded: false
   },

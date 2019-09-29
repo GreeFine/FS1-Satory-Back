@@ -3,7 +3,6 @@ type User {
   username: String! @unique
   password: String!
   posts: [Post!]!
-  tokens: [Token!]! @relation(onDelete: CASCADE)
   role: Role! @default(value: GUEST)
 
   createdAt: DateTime! @createdAt

@@ -7,10 +7,6 @@ module.exports = {
   count: Int!
 }
 
-type AggregateToken {
-  count: Int!
-}
-
 type AggregateUser {
   count: Int!
 }
@@ -30,11 +26,6 @@ type Mutation {
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   deletePost(where: PostWhereUniqueInput!): Post
   deleteManyPosts(where: PostWhereInput): BatchPayload!
-  createToken(data: TokenCreateInput!): Token!
-  updateToken(data: TokenUpdateInput!, where: TokenWhereUniqueInput!): Token
-  upsertToken(where: TokenWhereUniqueInput!, create: TokenCreateInput!, update: TokenUpdateInput!): Token!
-  deleteToken(where: TokenWhereUniqueInput!): Token
-  deleteManyTokens(where: TokenWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -299,9 +290,6 @@ type Query {
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
-  token(where: TokenWhereUniqueInput!): Token
-  tokens(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Token]!
-  tokensConnection(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TokenConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -316,163 +304,7 @@ enum Role {
 
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
-  token(where: TokenSubscriptionWhereInput): TokenSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type Token {
-  id: ID!
-  user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type TokenConnection {
-  pageInfo: PageInfo!
-  edges: [TokenEdge]!
-  aggregate: AggregateToken!
-}
-
-input TokenCreateInput {
-  id: ID
-  user: UserCreateOneWithoutTokensInput!
-}
-
-input TokenCreateManyWithoutUserInput {
-  create: [TokenCreateWithoutUserInput!]
-  connect: [TokenWhereUniqueInput!]
-}
-
-input TokenCreateWithoutUserInput {
-  id: ID
-}
-
-type TokenEdge {
-  node: Token!
-  cursor: String!
-}
-
-enum TokenOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type TokenPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input TokenScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [TokenScalarWhereInput!]
-  OR: [TokenScalarWhereInput!]
-  NOT: [TokenScalarWhereInput!]
-}
-
-type TokenSubscriptionPayload {
-  mutation: MutationType!
-  node: Token
-  updatedFields: [String!]
-  previousValues: TokenPreviousValues
-}
-
-input TokenSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: TokenWhereInput
-  AND: [TokenSubscriptionWhereInput!]
-  OR: [TokenSubscriptionWhereInput!]
-  NOT: [TokenSubscriptionWhereInput!]
-}
-
-input TokenUpdateInput {
-  user: UserUpdateOneRequiredWithoutTokensInput
-}
-
-input TokenUpdateManyWithoutUserInput {
-  create: [TokenCreateWithoutUserInput!]
-  delete: [TokenWhereUniqueInput!]
-  connect: [TokenWhereUniqueInput!]
-  set: [TokenWhereUniqueInput!]
-  disconnect: [TokenWhereUniqueInput!]
-  deleteMany: [TokenScalarWhereInput!]
-}
-
-input TokenWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  user: UserWhereInput
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [TokenWhereInput!]
-  OR: [TokenWhereInput!]
-  NOT: [TokenWhereInput!]
-}
-
-input TokenWhereUniqueInput {
-  id: ID
 }
 
 type User {
@@ -480,7 +312,6 @@ type User {
   username: String!
   password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
-  tokens(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Token!]
   role: Role!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -497,7 +328,6 @@ input UserCreateInput {
   username: String!
   password: String!
   posts: PostCreateManyWithoutAuthorInput
-  tokens: TokenCreateManyWithoutUserInput
   role: Role
 }
 
@@ -506,24 +336,10 @@ input UserCreateOneWithoutPostsInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutTokensInput {
-  create: UserCreateWithoutTokensInput
-  connect: UserWhereUniqueInput
-}
-
 input UserCreateWithoutPostsInput {
   id: ID
   username: String!
   password: String!
-  tokens: TokenCreateManyWithoutUserInput
-  role: Role
-}
-
-input UserCreateWithoutTokensInput {
-  id: ID
-  username: String!
-  password: String!
-  posts: PostCreateManyWithoutAuthorInput
   role: Role
 }
 
@@ -578,7 +394,6 @@ input UserUpdateInput {
   username: String
   password: String
   posts: PostUpdateManyWithoutAuthorInput
-  tokens: TokenUpdateManyWithoutUserInput
   role: Role
 }
 
@@ -586,13 +401,6 @@ input UserUpdateManyMutationInput {
   username: String
   password: String
   role: Role
-}
-
-input UserUpdateOneRequiredWithoutTokensInput {
-  create: UserCreateWithoutTokensInput
-  update: UserUpdateWithoutTokensDataInput
-  upsert: UserUpsertWithoutTokensInput
-  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneWithoutPostsInput {
@@ -607,25 +415,12 @@ input UserUpdateOneWithoutPostsInput {
 input UserUpdateWithoutPostsDataInput {
   username: String
   password: String
-  tokens: TokenUpdateManyWithoutUserInput
-  role: Role
-}
-
-input UserUpdateWithoutTokensDataInput {
-  username: String
-  password: String
-  posts: PostUpdateManyWithoutAuthorInput
   role: Role
 }
 
 input UserUpsertWithoutPostsInput {
   update: UserUpdateWithoutPostsDataInput!
   create: UserCreateWithoutPostsInput!
-}
-
-input UserUpsertWithoutTokensInput {
-  update: UserUpdateWithoutTokensDataInput!
-  create: UserCreateWithoutTokensInput!
 }
 
 input UserWhereInput {
@@ -674,9 +469,6 @@ input UserWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
-  tokens_every: TokenWhereInput
-  tokens_some: TokenWhereInput
-  tokens_none: TokenWhereInput
   role: Role
   role_not: Role
   role_in: [Role!]
