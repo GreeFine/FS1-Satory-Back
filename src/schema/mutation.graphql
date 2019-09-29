@@ -1,0 +1,19 @@
+type Mutation {
+  register(username: String!, password: String!): User!
+  login(username: String!, password: String!): LoginResponse!
+  createUser(name: String!): User!
+  createDraft(title: String!, userId: ID!): Post!
+  publish(postId: ID!): Post!
+  updateRole(username: String!, role: Role!): User!
+}
+
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
+type LoginResponse {
+  token: String!
+  user: User!
+}

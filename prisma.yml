@@ -1,6 +1,9 @@
-endpoint: http://prisma:4466
+endpoint: http://${env:PRISMA_HOST}:4466
 datamodel: datamodel.prisma
+secret: fs1-admin-pass!
 
 generate:
   - generator: javascript-client
     output: ./src/generated/prisma-client/
+  # - generator: graphql-schema
+  #   output: ./src/generated/prisma.graphql

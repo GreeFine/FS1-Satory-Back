@@ -3,8 +3,8 @@ services:
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
-    # ports:
-    #   - '127.0.0.1:4466:4466'
+    ports:
+      - '127.0.0.1:4466:4466'
     environment:
       PRISMA_CONFIG: |
         port: 4466
@@ -32,23 +32,16 @@ services:
   graphql:
     build: .
     restart: always
+    environment:
+      - PRISMA_HOST=prisma
+      - PRISMA_MANAGEMENT_API_JWT_SECRET=fs1-admin-pass!
+      - JWT_SECRET=secret
     ports:
       - '4000:4000'
     depends_on:
       - prisma
     volumes:
       - ./:/fs1-satory-back
-#     networks:
-#       - webgateway
-#     deploy:
-#       labels:
-#         traefik.port: '4000'
-#         traefik.frontend.rule: 'Host: api.greefine.app'
-#         traefik.docker.network: 'webgateway'
-
-# networks:
-#   webgateway:
-#     external: true
 
 volumes:
   postgres:

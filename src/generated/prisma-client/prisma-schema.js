@@ -32,7 +32,6 @@ type Mutation {
   deleteManyPosts(where: PostWhereInput): BatchPayload!
   createToken(data: TokenCreateInput!): Token!
   updateToken(data: TokenUpdateInput!, where: TokenWhereUniqueInput!): Token
-  updateManyTokens(data: TokenUpdateManyMutationInput!, where: TokenWhereInput): BatchPayload!
   upsertToken(where: TokenWhereUniqueInput!, create: TokenCreateInput!, update: TokenUpdateInput!): Token!
   deleteToken(where: TokenWhereUniqueInput!): Token
   deleteManyTokens(where: TokenWhereInput): BatchPayload!
@@ -66,6 +65,8 @@ type Post {
   title: String!
   published: Boolean!
   author: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type PostConnection {
@@ -104,12 +105,18 @@ enum PostOrderByInput {
   title_DESC
   published_ASC
   published_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type PostPreviousValues {
   id: ID!
   title: String!
   published: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input PostScalarWhereInput {
@@ -143,6 +150,22 @@ input PostScalarWhereInput {
   title_not_ends_with: String
   published: Boolean
   published_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [PostScalarWhereInput!]
   OR: [PostScalarWhereInput!]
   NOT: [PostScalarWhereInput!]
@@ -247,6 +270,22 @@ input PostWhereInput {
   published: Boolean
   published_not: Boolean
   author: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [PostWhereInput!]
   OR: [PostWhereInput!]
   NOT: [PostWhereInput!]
@@ -269,6 +308,12 @@ type Query {
   node(id: ID!): Node
 }
 
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   token(where: TokenSubscriptionWhereInput): TokenSubscriptionPayload
@@ -277,8 +322,9 @@ type Subscription {
 
 type Token {
   id: ID!
-  expiration: DateTime!
   user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type TokenConnection {
@@ -289,7 +335,6 @@ type TokenConnection {
 
 input TokenCreateInput {
   id: ID
-  expiration: DateTime!
   user: UserCreateOneWithoutTokensInput!
 }
 
@@ -300,7 +345,6 @@ input TokenCreateManyWithoutUserInput {
 
 input TokenCreateWithoutUserInput {
   id: ID
-  expiration: DateTime!
 }
 
 type TokenEdge {
@@ -311,13 +355,16 @@ type TokenEdge {
 enum TokenOrderByInput {
   id_ASC
   id_DESC
-  expiration_ASC
-  expiration_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type TokenPreviousValues {
   id: ID!
-  expiration: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input TokenScalarWhereInput {
@@ -335,14 +382,22 @@ input TokenScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [TokenScalarWhereInput!]
   OR: [TokenScalarWhereInput!]
   NOT: [TokenScalarWhereInput!]
@@ -367,16 +422,7 @@ input TokenSubscriptionWhereInput {
 }
 
 input TokenUpdateInput {
-  expiration: DateTime
   user: UserUpdateOneRequiredWithoutTokensInput
-}
-
-input TokenUpdateManyDataInput {
-  expiration: DateTime
-}
-
-input TokenUpdateManyMutationInput {
-  expiration: DateTime
 }
 
 input TokenUpdateManyWithoutUserInput {
@@ -385,30 +431,7 @@ input TokenUpdateManyWithoutUserInput {
   connect: [TokenWhereUniqueInput!]
   set: [TokenWhereUniqueInput!]
   disconnect: [TokenWhereUniqueInput!]
-  update: [TokenUpdateWithWhereUniqueWithoutUserInput!]
-  upsert: [TokenUpsertWithWhereUniqueWithoutUserInput!]
   deleteMany: [TokenScalarWhereInput!]
-  updateMany: [TokenUpdateManyWithWhereNestedInput!]
-}
-
-input TokenUpdateManyWithWhereNestedInput {
-  where: TokenScalarWhereInput!
-  data: TokenUpdateManyDataInput!
-}
-
-input TokenUpdateWithoutUserDataInput {
-  expiration: DateTime
-}
-
-input TokenUpdateWithWhereUniqueWithoutUserInput {
-  where: TokenWhereUniqueInput!
-  data: TokenUpdateWithoutUserDataInput!
-}
-
-input TokenUpsertWithWhereUniqueWithoutUserInput {
-  where: TokenWhereUniqueInput!
-  update: TokenUpdateWithoutUserDataInput!
-  create: TokenCreateWithoutUserInput!
 }
 
 input TokenWhereInput {
@@ -426,15 +449,23 @@ input TokenWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  expiration: DateTime
-  expiration_not: DateTime
-  expiration_in: [DateTime!]
-  expiration_not_in: [DateTime!]
-  expiration_lt: DateTime
-  expiration_lte: DateTime
-  expiration_gt: DateTime
-  expiration_gte: DateTime
   user: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [TokenWhereInput!]
   OR: [TokenWhereInput!]
   NOT: [TokenWhereInput!]
@@ -446,11 +477,13 @@ input TokenWhereUniqueInput {
 
 type User {
   id: ID!
-  name: String!
+  username: String!
   password: String!
-  email: String
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   tokens(where: TokenWhereInput, orderBy: TokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Token!]
+  role: Role!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -461,11 +494,11 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  name: String!
+  username: String!
   password: String!
-  email: String
   posts: PostCreateManyWithoutAuthorInput
   tokens: TokenCreateManyWithoutUserInput
+  role: Role
 }
 
 input UserCreateOneWithoutPostsInput {
@@ -480,18 +513,18 @@ input UserCreateOneWithoutTokensInput {
 
 input UserCreateWithoutPostsInput {
   id: ID
-  name: String!
+  username: String!
   password: String!
-  email: String
   tokens: TokenCreateManyWithoutUserInput
+  role: Role
 }
 
 input UserCreateWithoutTokensInput {
   id: ID
-  name: String!
+  username: String!
   password: String!
-  email: String
   posts: PostCreateManyWithoutAuthorInput
+  role: Role
 }
 
 type UserEdge {
@@ -502,19 +535,25 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  username_ASC
+  username_DESC
   password_ASC
   password_DESC
-  email_ASC
-  email_DESC
+  role_ASC
+  role_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  username: String!
   password: String!
-  email: String
+  role: Role!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -536,17 +575,17 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  name: String
+  username: String
   password: String
-  email: String
   posts: PostUpdateManyWithoutAuthorInput
   tokens: TokenUpdateManyWithoutUserInput
+  role: Role
 }
 
 input UserUpdateManyMutationInput {
-  name: String
+  username: String
   password: String
-  email: String
+  role: Role
 }
 
 input UserUpdateOneRequiredWithoutTokensInput {
@@ -566,17 +605,17 @@ input UserUpdateOneWithoutPostsInput {
 }
 
 input UserUpdateWithoutPostsDataInput {
-  name: String
+  username: String
   password: String
-  email: String
   tokens: TokenUpdateManyWithoutUserInput
+  role: Role
 }
 
 input UserUpdateWithoutTokensDataInput {
-  name: String
+  username: String
   password: String
-  email: String
   posts: PostUpdateManyWithoutAuthorInput
+  role: Role
 }
 
 input UserUpsertWithoutPostsInput {
@@ -604,20 +643,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -632,26 +671,32 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
   tokens_every: TokenWhereInput
   tokens_some: TokenWhereInput
   tokens_none: TokenWhereInput
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -659,7 +704,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  email: String
+  username: String
 }
 `
       }

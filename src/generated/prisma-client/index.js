@@ -15,11 +15,16 @@ var models = [
   {
     name: "Post",
     embedded: false
+  },
+  {
+    name: "Role",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `http://prisma:4466`
+  endpoint: `http://${process.env["PRISMA_HOST"]}:4466`,
+  secret: `fs1-admin-pass!`
 });
 exports.prisma = new exports.Prisma();

@@ -1,16 +1,13 @@
 type User {
   id: ID! @id
-  name: String!
+  username: String! @unique
   password: String!
-  email: String @unique
   posts: [Post!]!
   tokens: [Token!]! @relation(onDelete: CASCADE)
-}
+  role: Role! @default(value: GUEST)
 
-type Token {
-  id: ID! @id
-  expiration: DateTime!
-  user: User!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Post {
@@ -18,4 +15,13 @@ type Post {
   title: String!
   published: Boolean! @default(value: false)
   author: User @relation(link: INLINE)
+
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+enum Role {
+  ADMIN
+  USER
+  GUEST
 }
