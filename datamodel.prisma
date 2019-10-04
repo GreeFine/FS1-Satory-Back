@@ -1,10 +1,10 @@
 type User {
   id: ID! @id
+  refresh_token: ID!
   username: String! @unique
   password: String!
   posts: [Post!]!
   role: Role! @default(value: GUEST)
-
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

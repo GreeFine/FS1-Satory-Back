@@ -7,7 +7,7 @@ const { GraphQLServer } = require('graphql-yoga');
 
 const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
-const { permissions, getRole } = require('./auth');
+const { permissions, getRole } = require('./permissions');
 const cookieParser = require('cookie-parser');
 
 const resolvers = {
@@ -22,7 +22,7 @@ const server = new GraphQLServer({
   context: req => ({
     ...req,
     prisma,
-    role: getRole(req),
+    role: getRole(req, prisma),
   }),
 });
 

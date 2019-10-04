@@ -309,6 +309,7 @@ type Subscription {
 
 type User {
   id: ID!
+  refresh_token: ID!
   username: String!
   password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
@@ -325,6 +326,7 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
+  refresh_token: ID!
   username: String!
   password: String!
   posts: PostCreateManyWithoutAuthorInput
@@ -338,6 +340,7 @@ input UserCreateOneWithoutPostsInput {
 
 input UserCreateWithoutPostsInput {
   id: ID
+  refresh_token: ID!
   username: String!
   password: String!
   role: Role
@@ -351,6 +354,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  refresh_token_ASC
+  refresh_token_DESC
   username_ASC
   username_DESC
   password_ASC
@@ -365,6 +370,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  refresh_token: ID!
   username: String!
   password: String!
   role: Role!
@@ -391,6 +397,7 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  refresh_token: ID
   username: String
   password: String
   posts: PostUpdateManyWithoutAuthorInput
@@ -398,6 +405,7 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyMutationInput {
+  refresh_token: ID
   username: String
   password: String
   role: Role
@@ -413,6 +421,7 @@ input UserUpdateOneWithoutPostsInput {
 }
 
 input UserUpdateWithoutPostsDataInput {
+  refresh_token: ID
   username: String
   password: String
   role: Role
@@ -438,6 +447,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  refresh_token: ID
+  refresh_token_not: ID
+  refresh_token_in: [ID!]
+  refresh_token_not_in: [ID!]
+  refresh_token_lt: ID
+  refresh_token_lte: ID
+  refresh_token_gt: ID
+  refresh_token_gte: ID
+  refresh_token_contains: ID
+  refresh_token_not_contains: ID
+  refresh_token_starts_with: ID
+  refresh_token_not_starts_with: ID
+  refresh_token_ends_with: ID
+  refresh_token_not_ends_with: ID
   username: String
   username_not: String
   username_in: [String!]

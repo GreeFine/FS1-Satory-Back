@@ -1,6 +1,6 @@
 type Mutation {
   register(username: String!, password: String!): User!
-  login(username: String!, password: String!): LoginResponse!
+  login(username: String!, password: String!): User!
   logout: String!
   createUser(name: String!): User!
   createDraft(title: String!, userId: ID!): Post!
@@ -12,9 +12,4 @@ enum Role {
   ADMIN
   USER
   GUEST
-}
-
-type LoginResponse {
-  token: String!
-  user: User!
 }

@@ -1,19 +1,13 @@
-const jwt = require('jsonwebtoken');
 const { rule, shield, and, or, not } = require('graphql-shield');
-
+const { tokenCheck } = require('./jwt');
 // Auth
 
-function getRole(req) {
-  let token;
+function getRole(req, prisma) {
   if (req.request.cookies) {
     const authorization = req.request.cookies.Authorization;
-    try {
-      token = jwt.verify(authorization, process.env['JWT_SECRET']);
-    } catch (e) {
-      return null;
-    }
+    return tokenCheck(req, authorization, prisma);
   }
-  return token.role;
+  return null;
 }
 
 // Rules
@@ -26,7 +20,7 @@ const isNotAuthenticated = rule()(async (parent, args, ctx, info) => {
 });
 
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  return ctx.role !== null;
+  return ctx.role === null ? new Error('Not connected.') : true;
 });
 
 const isAdmin = rule()(async (parent, args, ctx, info) => {
