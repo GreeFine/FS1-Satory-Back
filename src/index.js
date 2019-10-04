@@ -4,7 +4,6 @@ console.log(`Prisma endpoint: ${process.env['PRISMA_HOST']}`);
 
 const { prisma } = require('./generated/prisma-client');
 const { GraphQLServer } = require('graphql-yoga');
-const cors = require('cors');
 
 const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
@@ -27,14 +26,15 @@ const server = new GraphQLServer({
   }),
 });
 
-var corsOptions = {
-  origin: 'http://localhost:4000/',
-  credentials: true,
+const options = {
+  port: 4000,
+  cors: {
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://greefine.ovh'],
+  },
 };
 
 server.express.use(cookieParser());
-server.express.use(cors(corsOptions));
-
-server.start(({ port }) =>
+server.start(options, ({ port }) =>
   console.log(`Server is running on http://localhost:${port}/`)
 );
