@@ -1,16 +1,16 @@
-const jwt = require('jsonwebtoken');
+const JWT = require('jsonwebtoken');
 
 function userTokenCreate(user, req) {
-  const token = jwt.sign(
+  const token = JWT.sign(
     {
-      id: user.id,
+      uid: user.id,
       username: user.username,
       role: user.role,
       refresh_token: user.refresh_token,
     },
     process.env['JWT_SECRET'],
     {
-      expiresIn: '1m',
+      expiresIn: '5m',
     }
   );
   req.response.cookie('Authorization', token, {
@@ -21,8 +21,8 @@ function userTokenCreate(user, req) {
 }
 
 async function refreshToken(prisma, authorization, req) {
-  const token = jwt.decode(authorization);
-  const user = await prisma.user({ id: token.id });
+  const token = JWT.decode(authorization);
+  const user = await prisma.user({ id: token.uid });
   if (user && user.refresh_token === token.refresh_token) {
     userTokenCreate(user, req);
     return user.role;
@@ -35,7 +35,8 @@ module.exports = {
   userTokenCreate,
   tokenCheck: function(req, authorization, prisma) {
     try {
-      return jwt.verify(authorization, process.env['JWT_SECRET']);
+      const jwt = JWT.verify(authorization, process.env['JWT_SECRET']);
+      return jwt;
     } catch (e) {
       if (e.name === 'TokenExpiredError')
         return refreshToken(prisma, authorization, req);

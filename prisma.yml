@@ -1,5 +1,5 @@
 endpoint: http://${env:PRISMA_HOST}:4466
-datamodel: datamodel.prisma
+datamodel: datamodel.graphql
 secret: fs1-admin-pass!
 
 generate:

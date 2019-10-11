@@ -34,4 +34,10 @@ module.exports = {
     context.response.clearCookie('Authorization');
     return 'Success';
   },
+  updateRole(root, args, context) {
+    return context.prisma.updateUser({
+      where: { username: args.username },
+      data: { role: args.role },
+    });
+  },
 };

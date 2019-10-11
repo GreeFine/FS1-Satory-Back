@@ -3,17 +3,20 @@ type User {
   refresh_token: ID!
   username: String! @unique
   password: String!
-  posts: [Post!]!
   role: Role! @default(value: GUEST)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  events: [Event!] @relation(name: "Participants")
+  myevents: [Event!] @relation(name: "Author")
 }
 
-type Post {
+type Event {
   id: ID! @id
   title: String!
-  published: Boolean! @default(value: false)
-  author: User @relation(link: INLINE)
+  content: String!
+  # published: Boolean! @default(value: false)
+  author: User @relation(link: INLINE, name: "Author")
+  participants: [User!]! @relation(link: TABLE, name: "Participants")
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

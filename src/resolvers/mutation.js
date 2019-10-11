@@ -1,7 +1,7 @@
 const Auth = require('./mutations/auth');
-const Posts = require('./mutations/posts');
+const Events = require('./mutations/events');
 
 module.exports = {
   ...Auth,
-  ...Posts,
+  ...Events,
 };

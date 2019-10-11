@@ -2,7 +2,7 @@ const { rule, shield, and, or, not } = require('graphql-shield');
 const { tokenCheck } = require('./jwt');
 // Auth
 
-function getRole(req, prisma) {
+function getJWT(req, prisma) {
   if (req.request.cookies) {
     const authorization = req.request.cookies.Authorization;
     return tokenCheck(req, authorization, prisma);
@@ -12,41 +12,50 @@ function getRole(req, prisma) {
 
 // Rules
 
-const isNotAuthenticated = rule()(async (parent, args, ctx, info) => {
-  if (ctx.role !== null) {
-    return new Error('Already connected.');
+const isNotAuthenticated = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    if (ctx.jwt !== null) {
+      return new Error('Already connected.');
+    }
+    return true;
   }
-  return true;
-});
+);
 
-const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  return ctx.role === null ? new Error('Not connected.') : true;
-});
+const isAuthenticated = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return ctx.jwt.role === null ? new Error('Not connected.') : true;
+  }
+);
 
-const isAdmin = rule()(async (parent, args, ctx, info) => {
-  return ctx.role === 'ADMIN';
-});
+const isAdmin = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return ctx.jwt.role === 'ADMIN';
+  }
+);
 
-const canReadposts = rule()(async (parent, args, ctx, info) => {
-  return ctx.role !== 'GUEST';
-});
+const canReadEvents = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return ctx.jwt.role !== 'GUEST';
+  }
+);
 
 // Permissions
 
 const permissions = shield({
   Query: {
-    publishedPosts: and(isAuthenticated, canReadposts),
+    events: and(isAuthenticated, canReadEvents),
+    users: isAdmin,
+    me: isAuthenticated,
   },
   Mutation: {
     login: isNotAuthenticated,
     register: isNotAuthenticated,
-    createDraft: isAuthenticated,
-    publish: isAdmin,
+    createEvent: isAdmin,
     updateRole: isAdmin,
   },
 });
 
 module.exports = {
   permissions,
-  getRole,
+  getJWT,
 };

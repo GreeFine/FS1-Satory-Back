@@ -3,8 +3,8 @@ type Mutation {
   login(username: String!, password: String!): User!
   logout: String!
   createUser(name: String!): User!
-  createDraft(title: String!, userId: ID!): Post!
-  publish(postId: ID!): Post!
+  createEvent(title: String!, userId: ID!): Event!
+  deleteEvent(id: ID!): Event!
   updateRole(username: String!, role: Role!): User!
 }
 

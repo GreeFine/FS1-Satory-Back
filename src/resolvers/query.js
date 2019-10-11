@@ -1,15 +1,11 @@
 module.exports = {
-  publishedPosts(root, args, context) {
-    return context.prisma.posts({ where: { published: true } });
+  events(root, args, context) {
+    return context.prisma.events();
   },
-  post(root, args, context) {
-    return context.prisma.post({ id: args.postId });
+  users(root, args, context) {
+    return context.prisma.users();
   },
-  postsByUser(root, args, context) {
-    return context.prisma
-      .user({
-        id: args.userId,
-      })
-      .posts();
+  me(root, args, context) {
+    return context.prisma.user({ id: context.jwt.uid });
   },
 };

@@ -5,12 +5,15 @@ type User {
   id: ID!
   username: String!
   role: String!
-  posts: [Post!]!
+  events: [Event!]
+  ownedevents: [Event!]
 }
 
-type Post {
+type Event {
   id: ID!
   title: String!
+  content: String!
   published: Boolean!
   author: User
+  participants: [User!]!
 }
