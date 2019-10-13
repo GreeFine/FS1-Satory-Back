@@ -1,13 +1,13 @@
 module.exports = {
-  createEvent(root, { title, userId, content }, context) {
+  createEvent(root, { title, content }, context) {
     return context.prisma.createEvent({
       title: title,
       content: content,
       author: {
-        connect: { id: userId },
+        connect: { id: context.jwt.uid },
       },
       participants: {
-        connect: { id: userId },
+        connect: { id: context.jwt.uid },
       },
     });
   },

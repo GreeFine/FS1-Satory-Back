@@ -27,7 +27,7 @@ const server = new GraphQLServer({
 });
 
 const options = {
-  port: 4000,
+  port: process.env.NODE_ENV === 'test' ? 0 : 4000,
   cors: {
     credentials: true,
     origin: ['http://localhost:3000', 'http://greefine.ovh'],
@@ -35,6 +35,12 @@ const options = {
 };
 
 server.express.use(cookieParser());
-server.start(options, ({ port }) =>
-  console.log(`Server is running on http://localhost:${port}/`)
-);
+
+module.exports = async function serverStart() {
+  const live_server = await server.start(options, ({ port }) =>
+    console.log(`Server is running on http://localhost:${port}/`)
+  );
+  return live_server;
+};
+
+if (process.env.NODE_ENV !== 'test') serverStart();
