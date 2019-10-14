@@ -11,7 +11,8 @@
     "graphql-shield": "^6.1.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
-    "prisma-client-lib": "^1.34.8"
+    "prisma-client-lib": "^1.34.8",
+    "validator": "^11.1.0"
   },
   "devDependencies": {
     "graphql-request": "^1.8.2",
@@ -19,7 +20,7 @@
     "nodemon": "^1.19.2"
   },
   "scripts": {
-    "test": "prisma reset --force && jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

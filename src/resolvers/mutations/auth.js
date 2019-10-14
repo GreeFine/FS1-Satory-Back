@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+var validator = require('validator');
 const { userTokenCreate } = require('../../jwt');
 
 module.exports = {
@@ -20,6 +21,14 @@ module.exports = {
     return user;
   },
   register: async (root, { username, password }, context) => {
+    if (
+      !validator.isAlpha(username) ||
+      !validator.isLength(username, { min: 3, max: 20 })
+    )
+      throw new Error('Invalid Username');
+    if (!validator.isLength(password, { min: 6 }))
+      throw new Error('Invalid Password');
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await context.prisma.createUser({
       username,

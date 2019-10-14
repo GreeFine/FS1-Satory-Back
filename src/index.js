@@ -1,3 +1,4 @@
+const { exec } = require('child_process');
 const dotenv = require('dotenv');
 dotenv.config();
 console.log(`Prisma endpoint: ${process.env['PRISMA_HOST']}`);
@@ -36,11 +37,26 @@ const options = {
 
 server.express.use(cookieParser());
 
-module.exports = async function serverStart() {
+module.exports.serverStart = async function() {
   const live_server = await server.start(options, ({ port }) =>
     console.log(`Server is running on http://localhost:${port}/`)
   );
   return live_server;
+};
+
+module.exports.resetDB = function() {
+  return new Promise((resolve, reject) => {
+    exec('prisma reset --force', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        reject();
+        return;
+      }
+      if (stdout) console.log(`stdout: ${stdout}`);
+      else if (stderr) console.log(`stderr: ${stderr}`);
+      resolve();
+    });
+  });
 };
 
 if (process.env.NODE_ENV !== 'test') serverStart();
