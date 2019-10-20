@@ -27,13 +27,14 @@ async function refreshToken(prisma, authorization, req) {
     userTokenCreate(user, req);
     return user.role;
   }
-  req.response.clearCookie('Authorization');
+  await req.response.clearCookie('Authorization');
   return null;
 }
 
 module.exports = {
   userTokenCreate,
   tokenCheck: function(req, authorization, prisma) {
+    if (!authorization) return null;
     try {
       const jwt = JWT.verify(authorization, process.env['JWT_SECRET']);
       return jwt;

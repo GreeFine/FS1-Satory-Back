@@ -1,0 +1,6 @@
+# import EventSubscriptionPayload from "../generated/prisma.graphql"
+
+type Subscription {
+  event: EventSubscriptionPayload!
+  eventDeleted: Event!
+}

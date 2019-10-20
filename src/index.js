@@ -3,17 +3,21 @@ const dotenv = require('dotenv');
 dotenv.config();
 console.log(`Prisma endpoint: ${process.env['PRISMA_HOST']}`);
 
-const { prisma } = require('./generated/prisma-client');
 const { GraphQLServer } = require('graphql-yoga');
+const { Prisma: PrismaBinding } = require('prisma-binding');
+const cookieParser = require('cookie-parser');
 
 const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
+const Subscription = require('./resolvers/subscription');
+
 const { permissions, getJWT } = require('./permissions');
-const cookieParser = require('cookie-parser');
+const { prisma } = require('./generated/prisma-client');
 
 const resolvers = {
   Query,
   Mutation,
+  Subscription,
 };
 
 const server = new GraphQLServer({
@@ -23,6 +27,12 @@ const server = new GraphQLServer({
   context: req => ({
     ...req,
     prisma,
+    db: new PrismaBinding({
+      typeDefs: './src/generated/prisma.graphql',
+      endpoint: `http://${process.env.PRISMA_HOST}:4466`,
+      secret: 'fs1-admin-pass!',
+      debug: true,
+    }),
     jwt: getJWT(req, prisma),
   }),
 });
@@ -32,6 +42,15 @@ const options = {
   cors: {
     credentials: true,
     origin: ['http://localhost:3000', 'http://greefine.ovh'],
+  },
+  subscriptions: {
+    onConnect: async (connectionParams, webSocket) => {
+      try {
+        return await webSocket.upgradeReq.headers;
+      } catch (error) {
+        console.error('error', error);
+      }
+    },
   },
 };
 
@@ -59,4 +78,4 @@ module.exports.resetDB = function() {
   });
 };
 
-if (process.env.NODE_ENV !== 'test') serverStart();
+if (process.env.NODE_ENV !== 'test') module.exports.serverStart();

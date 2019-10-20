@@ -1,5 +1,6 @@
 # import Query from "./query.graphql"
 # import Mutation from "./mutation.graphql"
+# import Subscription from "./subscription.graphql"
 
 type User {
   id: ID!

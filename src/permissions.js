@@ -1,13 +1,14 @@
 const { rule, shield, and, or, not } = require('graphql-shield');
 const { tokenCheck } = require('./jwt');
-// Auth
+const cookie = require('cookie');
 
 function getJWT(req, prisma) {
-  if (req.request.cookies) {
-    const authorization = req.request.cookies.Authorization;
-    return tokenCheck(req, authorization, prisma);
-  }
-  return null;
+  let authorization = undefined;
+  if (req.connection)
+    authorization = cookie.parse(req.connection.context.cookie).Authorization;
+  else if (req.request.cookies)
+    authorization = req.request.cookies.Authorization;
+  return tokenCheck(req, authorization, prisma);
 }
 
 // Rules
@@ -52,6 +53,9 @@ const permissions = shield({
     register: isNotAuthenticated,
     createEvent: isAdmin,
     updateRole: isAdmin,
+  },
+  Subscription: {
+    event: and(isAuthenticated, canReadEvents),
   },
 });
 

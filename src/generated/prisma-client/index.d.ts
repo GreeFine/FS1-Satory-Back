@@ -172,9 +172,156 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
+export interface UserUpdateWithoutMyeventsDataInput {
+  refresh_token?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
+}
+
 export type EventWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
+
+export interface UserCreateManyWithoutEventsInput {
+  create?: Maybe<UserCreateWithoutEventsInput[] | UserCreateWithoutEventsInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface EventUpdateWithWhereUniqueWithoutAuthorInput {
+  where: EventWhereUniqueInput;
+  data: EventUpdateWithoutAuthorDataInput;
+}
+
+export interface UserCreateWithoutEventsInput {
+  id?: Maybe<ID_Input>;
+  refresh_token: ID_Input;
+  username: String;
+  password: String;
+  role?: Maybe<Role>;
+  myevents?: Maybe<EventCreateManyWithoutAuthorInput>;
+}
+
+export interface EventUpdateWithoutParticipantsDataInput {
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
+}
+
+export interface EventCreateManyWithoutAuthorInput {
+  create?: Maybe<
+    EventCreateWithoutAuthorInput[] | EventCreateWithoutAuthorInput
+  >;
+  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface EventCreateWithoutAuthorInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  content: String;
+  participants?: Maybe<UserCreateManyWithoutEventsInput>;
+}
+
+export interface UserUpdateManyMutationInput {
+  refresh_token?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+}
+
+export interface EventUpdateInput {
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
+  participants?: Maybe<UserUpdateManyWithoutEventsInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  refresh_token: ID_Input;
+  username: String;
+  password: String;
+  role?: Maybe<Role>;
+  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
+  myevents?: Maybe<EventCreateManyWithoutAuthorInput>;
+}
+
+export interface UserUpdateOneWithoutMyeventsInput {
+  create?: Maybe<UserCreateWithoutMyeventsInput>;
+  update?: Maybe<UserUpdateWithoutMyeventsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyeventsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateManyDataInput {
+  refresh_token?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+}
+
+export interface EventUpdateWithoutAuthorDataInput {
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  participants?: Maybe<UserUpdateManyWithoutEventsInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  username?: Maybe<String>;
+}>;
+
+export interface EventUpdateManyWithoutParticipantsInput {
+  create?: Maybe<
+    EventCreateWithoutParticipantsInput[] | EventCreateWithoutParticipantsInput
+  >;
+  delete?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  set?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  disconnect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+  update?: Maybe<
+    | EventUpdateWithWhereUniqueWithoutParticipantsInput[]
+    | EventUpdateWithWhereUniqueWithoutParticipantsInput
+  >;
+  upsert?: Maybe<
+    | EventUpsertWithWhereUniqueWithoutParticipantsInput[]
+    | EventUpsertWithWhereUniqueWithoutParticipantsInput
+  >;
+  deleteMany?: Maybe<EventScalarWhereInput[] | EventScalarWhereInput>;
+  updateMany?: Maybe<
+    EventUpdateManyWithWhereNestedInput[] | EventUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutEventsInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutEventsDataInput;
+  create: UserCreateWithoutEventsInput;
+}
+
+export interface EventUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: EventWhereUniqueInput;
+  data: EventUpdateWithoutParticipantsDataInput;
+}
+
+export interface UserCreateOneWithoutMyeventsInput {
+  create?: Maybe<UserCreateWithoutMyeventsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
 
 export interface EventWhereInput {
   id?: Maybe<ID_Input>;
@@ -242,6 +389,19 @@ export interface EventWhereInput {
   AND?: Maybe<EventWhereInput[] | EventWhereInput>;
   OR?: Maybe<EventWhereInput[] | EventWhereInput>;
   NOT?: Maybe<EventWhereInput[] | EventWhereInput>;
+}
+
+export interface EventCreateManyWithoutParticipantsInput {
+  create?: Maybe<
+    EventCreateWithoutParticipantsInput[] | EventCreateWithoutParticipantsInput
+  >;
+  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
+}
+
+export interface EventUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: EventWhereUniqueInput;
+  update: EventUpdateWithoutParticipantsDataInput;
+  create: EventCreateWithoutParticipantsInput;
 }
 
 export interface UserWhereInput {
@@ -332,138 +492,6 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  username?: Maybe<String>;
-}>;
-
-export interface EventCreateInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  content: String;
-  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
-  participants?: Maybe<UserCreateManyWithoutEventsInput>;
-}
-
-export interface UserCreateOneWithoutMyeventsInput {
-  create?: Maybe<UserCreateWithoutMyeventsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutMyeventsInput {
-  id?: Maybe<ID_Input>;
-  refresh_token: ID_Input;
-  username: String;
-  password: String;
-  role?: Maybe<Role>;
-  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
-}
-
-export interface EventCreateManyWithoutParticipantsInput {
-  create?: Maybe<
-    EventCreateWithoutParticipantsInput[] | EventCreateWithoutParticipantsInput
-  >;
-  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-}
-
-export interface EventCreateWithoutParticipantsInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  content: String;
-  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
-}
-
-export interface UserCreateManyWithoutEventsInput {
-  create?: Maybe<UserCreateWithoutEventsInput[] | UserCreateWithoutEventsInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutEventsInput {
-  id?: Maybe<ID_Input>;
-  refresh_token: ID_Input;
-  username: String;
-  password: String;
-  role?: Maybe<Role>;
-  myevents?: Maybe<EventCreateManyWithoutAuthorInput>;
-}
-
-export interface EventCreateManyWithoutAuthorInput {
-  create?: Maybe<
-    EventCreateWithoutAuthorInput[] | EventCreateWithoutAuthorInput
-  >;
-  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-}
-
-export interface EventCreateWithoutAuthorInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  content: String;
-  participants?: Maybe<UserCreateManyWithoutEventsInput>;
-}
-
-export interface EventUpdateInput {
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
-  participants?: Maybe<UserUpdateManyWithoutEventsInput>;
-}
-
-export interface UserUpdateOneWithoutMyeventsInput {
-  create?: Maybe<UserCreateWithoutMyeventsInput>;
-  update?: Maybe<UserUpdateWithoutMyeventsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyeventsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutMyeventsDataInput {
-  refresh_token?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Role>;
-  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
-}
-
-export interface EventUpdateManyWithoutParticipantsInput {
-  create?: Maybe<
-    EventCreateWithoutParticipantsInput[] | EventCreateWithoutParticipantsInput
-  >;
-  delete?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-  connect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-  set?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-  disconnect?: Maybe<EventWhereUniqueInput[] | EventWhereUniqueInput>;
-  update?: Maybe<
-    | EventUpdateWithWhereUniqueWithoutParticipantsInput[]
-    | EventUpdateWithWhereUniqueWithoutParticipantsInput
-  >;
-  upsert?: Maybe<
-    | EventUpsertWithWhereUniqueWithoutParticipantsInput[]
-    | EventUpsertWithWhereUniqueWithoutParticipantsInput
-  >;
-  deleteMany?: Maybe<EventScalarWhereInput[] | EventScalarWhereInput>;
-  updateMany?: Maybe<
-    EventUpdateManyWithWhereNestedInput[] | EventUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface EventUpdateWithWhereUniqueWithoutParticipantsInput {
-  where: EventWhereUniqueInput;
-  data: EventUpdateWithoutParticipantsDataInput;
-}
-
-export interface EventUpdateWithoutParticipantsDataInput {
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
-}
-
-export interface EventUpsertWithWhereUniqueWithoutParticipantsInput {
-  where: EventWhereUniqueInput;
-  update: EventUpdateWithoutParticipantsDataInput;
-  create: EventCreateWithoutParticipantsInput;
-}
-
 export interface EventScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
@@ -528,9 +556,23 @@ export interface EventScalarWhereInput {
   NOT?: Maybe<EventScalarWhereInput[] | EventScalarWhereInput>;
 }
 
+export interface UserUpdateInput {
+  refresh_token?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
+  myevents?: Maybe<EventUpdateManyWithoutAuthorInput>;
+}
+
 export interface EventUpdateManyWithWhereNestedInput {
   where: EventScalarWhereInput;
   data: EventUpdateManyDataInput;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
 }
 
 export interface EventUpdateManyDataInput {
@@ -538,42 +580,24 @@ export interface EventUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
+export interface EventUpsertWithWhereUniqueWithoutAuthorInput {
+  where: EventWhereUniqueInput;
+  update: EventUpdateWithoutAuthorDataInput;
+  create: EventCreateWithoutAuthorInput;
+}
+
 export interface UserUpsertWithoutMyeventsInput {
   update: UserUpdateWithoutMyeventsDataInput;
   create: UserCreateWithoutMyeventsInput;
 }
 
-export interface UserUpdateManyWithoutEventsInput {
-  create?: Maybe<UserCreateWithoutEventsInput[] | UserCreateWithoutEventsInput>;
-  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  update?: Maybe<
-    | UserUpdateWithWhereUniqueWithoutEventsInput[]
-    | UserUpdateWithWhereUniqueWithoutEventsInput
-  >;
-  upsert?: Maybe<
-    | UserUpsertWithWhereUniqueWithoutEventsInput[]
-    | UserUpsertWithWhereUniqueWithoutEventsInput
-  >;
-  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  updateMany?: Maybe<
-    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutEventsInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutEventsDataInput;
-}
-
-export interface UserUpdateWithoutEventsDataInput {
-  refresh_token?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
+export interface UserCreateWithoutMyeventsInput {
+  id?: Maybe<ID_Input>;
+  refresh_token: ID_Input;
+  username: String;
+  password: String;
   role?: Maybe<Role>;
-  myevents?: Maybe<EventUpdateManyWithoutAuthorInput>;
+  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
 }
 
 export interface EventUpdateManyWithoutAuthorInput {
@@ -598,27 +622,52 @@ export interface EventUpdateManyWithoutAuthorInput {
   >;
 }
 
-export interface EventUpdateWithWhereUniqueWithoutAuthorInput {
-  where: EventWhereUniqueInput;
-  data: EventUpdateWithoutAuthorDataInput;
+export interface UserUpdateWithoutEventsDataInput {
+  refresh_token?: Maybe<ID_Input>;
+  username?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+  myevents?: Maybe<EventUpdateManyWithoutAuthorInput>;
 }
 
-export interface EventUpdateWithoutAuthorDataInput {
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-  participants?: Maybe<UserUpdateManyWithoutEventsInput>;
-}
-
-export interface EventUpsertWithWhereUniqueWithoutAuthorInput {
-  where: EventWhereUniqueInput;
-  update: EventUpdateWithoutAuthorDataInput;
-  create: EventCreateWithoutAuthorInput;
-}
-
-export interface UserUpsertWithWhereUniqueWithoutEventsInput {
+export interface UserUpdateWithWhereUniqueWithoutEventsInput {
   where: UserWhereUniqueInput;
-  update: UserUpdateWithoutEventsDataInput;
-  create: UserCreateWithoutEventsInput;
+  data: UserUpdateWithoutEventsDataInput;
+}
+
+export interface UserUpdateManyWithoutEventsInput {
+  create?: Maybe<UserCreateWithoutEventsInput[] | UserCreateWithoutEventsInput>;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutEventsInput[]
+    | UserUpdateWithWhereUniqueWithoutEventsInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutEventsInput[]
+    | UserUpsertWithWhereUniqueWithoutEventsInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface EventCreateWithoutParticipantsInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  content: String;
+  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
+}
+
+export interface EventCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  content: String;
+  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
+  participants?: Maybe<UserCreateManyWithoutEventsInput>;
 }
 
 export interface UserScalarWhereInput {
@@ -703,47 +752,9 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
-}
-
-export interface UserUpdateManyDataInput {
-  refresh_token?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Role>;
-}
-
 export interface EventUpdateManyMutationInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  refresh_token: ID_Input;
-  username: String;
-  password: String;
-  role?: Maybe<Role>;
-  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
-  myevents?: Maybe<EventCreateManyWithoutAuthorInput>;
-}
-
-export interface UserUpdateInput {
-  refresh_token?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Role>;
-  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
-  myevents?: Maybe<EventUpdateManyWithoutAuthorInput>;
-}
-
-export interface UserUpdateManyMutationInput {
-  refresh_token?: Maybe<ID_Input>;
-  username?: Maybe<String>;
-  password?: Maybe<String>;
-  role?: Maybe<Role>;
 }
 
 export interface EventSubscriptionWhereInput {
@@ -757,19 +768,58 @@ export interface EventSubscriptionWhereInput {
   NOT?: Maybe<EventSubscriptionWhereInput[] | EventSubscriptionWhereInput>;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  refresh_token: ID_Output;
+  username: String;
+  password: String;
+  role: Role;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  refresh_token: () => Promise<ID_Output>;
+  username: () => Promise<String>;
+  password: () => Promise<String>;
+  role: () => Promise<Role>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  refresh_token: () => Promise<AsyncIterator<ID_Output>>;
+  username: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Event {
@@ -936,27 +986,6 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface EventConnection {
-  pageInfo: PageInfo;
-  edges: EventEdge[];
-}
-
-export interface EventConnectionPromise
-  extends Promise<EventConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EventEdge>>() => T;
-  aggregate: <T = AggregateEventPromise>() => T;
-}
-
-export interface EventConnectionSubscription
-  extends Promise<AsyncIterator<EventConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EventEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEventSubscription>() => T;
-}
-
 export interface PageInfo {
   hasNextPage: Boolean;
   hasPreviousPage: Boolean;
@@ -980,39 +1009,6 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface EventEdge {
-  node: Event;
-  cursor: String;
-}
-
-export interface EventEdgePromise extends Promise<EventEdge>, Fragmentable {
-  node: <T = EventPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface EventEdgeSubscription
-  extends Promise<AsyncIterator<EventEdge>>,
-    Fragmentable {
-  node: <T = EventSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateEvent {
-  count: Int;
-}
-
-export interface AggregateEventPromise
-  extends Promise<AggregateEvent>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateEventSubscription
-  extends Promise<AsyncIterator<AggregateEvent>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
@@ -1032,55 +1028,6 @@ export interface UserConnectionSubscription
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
   aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface EventSubscriptionPayload {
@@ -1136,6 +1083,76 @@ export interface EventPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface EventConnection {
+  pageInfo: PageInfo;
+  edges: EventEdge[];
+}
+
+export interface EventConnectionPromise
+  extends Promise<EventConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<EventEdge>>() => T;
+  aggregate: <T = AggregateEventPromise>() => T;
+}
+
+export interface EventConnectionSubscription
+  extends Promise<AsyncIterator<EventConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EventEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEventSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateEvent {
+  count: Int;
+}
+
+export interface AggregateEventPromise
+  extends Promise<AggregateEvent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateEventSubscription
+  extends Promise<AsyncIterator<AggregateEvent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -1161,50 +1178,22 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  refresh_token: ID_Output;
-  username: String;
-  password: String;
-  role: Role;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+export interface EventEdge {
+  node: Event;
+  cursor: String;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface EventEdgePromise extends Promise<EventEdge>, Fragmentable {
+  node: <T = EventPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface EventEdgeSubscription
+  extends Promise<AsyncIterator<EventEdge>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  refresh_token: () => Promise<ID_Output>;
-  username: () => Promise<String>;
-  password: () => Promise<String>;
-  role: () => Promise<Role>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  node: <T = EventSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  refresh_token: () => Promise<AsyncIterator<ID_Output>>;
-  username: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<Role>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1217,9 +1206,10 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
-export type Int = number;
+export type ID_Input = string | number;
+export type ID_Output = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -1227,6 +1217,16 @@ The `Boolean` scalar type represents `true` or `false`.
 export type Boolean = boolean;
 
 export type Long = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /**
  * Model Metadata
