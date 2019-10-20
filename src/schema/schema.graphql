@@ -14,7 +14,7 @@ type Event {
   id: ID!
   title: String!
   content: String!
-  published: Boolean!
+  date: DateTime!
   author: User
   participants: [User!]!
 }
