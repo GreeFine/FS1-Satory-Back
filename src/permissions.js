@@ -4,7 +4,7 @@ const cookie = require('cookie');
 
 function getJWT(req, prisma) {
   let authorization = undefined;
-  if (req.connection)
+  if (req.connection && req.connection.context.cookie)
     authorization = cookie.parse(req.connection.context.cookie).Authorization;
   else if (req.request.cookies)
     authorization = req.request.cookies.Authorization;
