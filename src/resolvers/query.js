@@ -2,7 +2,7 @@ module.exports = {
   events(root, args, context) {
     return context.prisma.events();
   },
-  users(root, args, context) {
+  async users(root, args, context) {
     return context.prisma.users();
   },
   me(root, args, context) {

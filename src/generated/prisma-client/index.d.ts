@@ -149,6 +149,8 @@ export type EventOrderByInput =
   | "title_DESC"
   | "content_ASC"
   | "content_DESC"
+  | "date_ASC"
+  | "date_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -206,7 +208,8 @@ export interface UserCreateWithoutEventsInput {
 export interface EventUpdateWithoutParticipantsDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
-  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutMyeventsInput>;
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface EventCreateManyWithoutAuthorInput {
@@ -232,6 +235,7 @@ export interface EventCreateWithoutAuthorInput {
   title: String;
   content: String;
   participants?: Maybe<UserCreateManyWithoutEventsInput>;
+  date: DateTimeInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -244,8 +248,9 @@ export interface UserUpdateManyMutationInput {
 export interface EventUpdateInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
-  author?: Maybe<UserUpdateOneWithoutMyeventsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutMyeventsInput>;
   participants?: Maybe<UserUpdateManyWithoutEventsInput>;
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreateInput {
@@ -254,16 +259,14 @@ export interface UserCreateInput {
   username: String;
   password: String;
   role?: Maybe<Role>;
-  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
   myevents?: Maybe<EventCreateManyWithoutAuthorInput>;
+  events?: Maybe<EventCreateManyWithoutParticipantsInput>;
 }
 
-export interface UserUpdateOneWithoutMyeventsInput {
+export interface UserUpdateOneRequiredWithoutMyeventsInput {
   create?: Maybe<UserCreateWithoutMyeventsInput>;
   update?: Maybe<UserUpdateWithoutMyeventsDataInput>;
   upsert?: Maybe<UserUpsertWithoutMyeventsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -278,6 +281,7 @@ export interface EventUpdateWithoutAuthorDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
   participants?: Maybe<UserUpdateManyWithoutEventsInput>;
+  date?: Maybe<DateTimeInput>;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -370,6 +374,14 @@ export interface EventWhereInput {
   participants_every?: Maybe<UserWhereInput>;
   participants_some?: Maybe<UserWhereInput>;
   participants_none?: Maybe<UserWhereInput>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -481,12 +493,12 @@ export interface UserWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  events_every?: Maybe<EventWhereInput>;
-  events_some?: Maybe<EventWhereInput>;
-  events_none?: Maybe<EventWhereInput>;
   myevents_every?: Maybe<EventWhereInput>;
   myevents_some?: Maybe<EventWhereInput>;
   myevents_none?: Maybe<EventWhereInput>;
+  events_every?: Maybe<EventWhereInput>;
+  events_some?: Maybe<EventWhereInput>;
+  events_none?: Maybe<EventWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -535,6 +547,14 @@ export interface EventScalarWhereInput {
   content_not_starts_with?: Maybe<String>;
   content_ends_with?: Maybe<String>;
   content_not_ends_with?: Maybe<String>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -561,8 +581,8 @@ export interface UserUpdateInput {
   username?: Maybe<String>;
   password?: Maybe<String>;
   role?: Maybe<Role>;
-  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
   myevents?: Maybe<EventUpdateManyWithoutAuthorInput>;
+  events?: Maybe<EventUpdateManyWithoutParticipantsInput>;
 }
 
 export interface EventUpdateManyWithWhereNestedInput {
@@ -578,6 +598,7 @@ export interface UserUpdateManyWithWhereNestedInput {
 export interface EventUpdateManyDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface EventUpsertWithWhereUniqueWithoutAuthorInput {
@@ -659,15 +680,17 @@ export interface EventCreateWithoutParticipantsInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
-  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
+  author: UserCreateOneWithoutMyeventsInput;
+  date: DateTimeInput;
 }
 
 export interface EventCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
-  author?: Maybe<UserCreateOneWithoutMyeventsInput>;
+  author: UserCreateOneWithoutMyeventsInput;
   participants?: Maybe<UserCreateManyWithoutEventsInput>;
+  date: DateTimeInput;
 }
 
 export interface UserScalarWhereInput {
@@ -755,6 +778,7 @@ export interface UserScalarWhereInput {
 export interface EventUpdateManyMutationInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface EventSubscriptionWhereInput {
@@ -826,6 +850,7 @@ export interface Event {
   id: ID_Output;
   title: String;
   content: String;
+  date: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -844,6 +869,7 @@ export interface EventPromise extends Promise<Event>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  date: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -864,6 +890,7 @@ export interface EventSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -884,6 +911,7 @@ export interface EventNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  date: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -906,7 +934,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   role: () => Promise<Role>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  events: <T = FragmentableArray<Event>>(args?: {
+  myevents: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -915,7 +943,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  myevents: <T = FragmentableArray<Event>>(args?: {
+  events: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -936,7 +964,7 @@ export interface UserSubscription
   role: () => Promise<AsyncIterator<Role>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  events: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
+  myevents: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -945,7 +973,7 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  myevents: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
+  events: <T = Promise<AsyncIterator<EventSubscription>>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -966,7 +994,7 @@ export interface UserNullablePromise
   role: () => Promise<Role>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  events: <T = FragmentableArray<Event>>(args?: {
+  myevents: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -975,7 +1003,7 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  myevents: <T = FragmentableArray<Event>>(args?: {
+  events: <T = FragmentableArray<Event>>(args?: {
     where?: EventWhereInput;
     orderBy?: EventOrderByInput;
     skip?: Int;
@@ -1059,6 +1087,7 @@ export interface EventPreviousValues {
   id: ID_Output;
   title: String;
   content: String;
+  date: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1069,6 +1098,7 @@ export interface EventPreviousValuesPromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   content: () => Promise<String>;
+  date: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1079,6 +1109,7 @@ export interface EventPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

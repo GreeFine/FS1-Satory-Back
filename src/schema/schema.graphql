@@ -6,8 +6,8 @@ type User {
   id: ID!
   username: String!
   role: String!
-  events: [Event!]
-  ownedevents: [Event!]
+  myevents: [Event!]!
+  events: [Event!]!
 }
 
 type Event {
@@ -15,6 +15,6 @@ type Event {
   title: String!
   content: String!
   date: DateTime!
-  author: User
+  author: User!
   participants: [User!]!
 }

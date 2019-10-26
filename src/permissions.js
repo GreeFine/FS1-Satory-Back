@@ -2,35 +2,37 @@ const { rule, shield, and, or, not } = require('graphql-shield');
 const { tokenCheck } = require('./jwt');
 const cookie = require('cookie');
 
-function getJWT(req, prisma) {
+async function getJWT(req, prisma) {
   let authorization = undefined;
-  if (req.connection && req.connection.context.cookie)
+  let isSocket = false;
+  if (req.connection && req.connection.context.cookie) {
     authorization = cookie.parse(req.connection.context.cookie).Authorization;
-  else if (req.request.cookies)
+    isSocket = true;
+  } else if (req.request.cookies)
     authorization = req.request.cookies.Authorization;
-  return tokenCheck(req, authorization, prisma);
+
+  return await tokenCheck(req, prisma, authorization, isSocket);
 }
 
 // Rules
 
 const isNotAuthenticated = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    if (ctx.jwt !== null) {
-      return new Error('Already connected.');
-    }
-    return true;
+    return ctx.jwt !== null ? new Error('Already connected.') : true;
   }
 );
 
 const isAuthenticated = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    return ctx.jwt.role === null ? new Error('Not connected.') : true;
+    return ctx.jwt === null ? new Error('Not connected.') : true;
   }
 );
 
 const isAdmin = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    return ctx.jwt.role === 'ADMIN';
+    return ctx.jwt.role !== 'ADMIN'
+      ? new Error('Only an admin can do that.')
+      : true;
   }
 );
 
@@ -45,14 +47,16 @@ const canReadEvents = rule({ cache: 'contextual' })(
 const permissions = shield({
   Query: {
     events: and(isAuthenticated, canReadEvents),
-    users: isAdmin,
+    users: and(isAuthenticated, isAdmin),
     me: isAuthenticated,
   },
   Mutation: {
     login: isNotAuthenticated,
+    logout: isAuthenticated,
     register: isNotAuthenticated,
-    createEvent: isAdmin,
-    updateRole: isAdmin,
+    createEvent: and(isAuthenticated, isAdmin),
+    updateRole: and(isAuthenticated, isAdmin),
+    addParticipants: and(isAuthenticated, isAdmin),
   },
   Subscription: {
     event: and(isAuthenticated, canReadEvents),

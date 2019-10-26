@@ -1,31 +1,38 @@
 const JWT = require('jsonwebtoken');
 
 function userTokenCreate(user, req) {
-  const token = JWT.sign(
-    {
-      uid: user.id,
-      username: user.username,
-      role: user.role,
-      refresh_token: user.refresh_token,
-    },
-    process.env['JWT_SECRET'],
-    {
-      expiresIn: '5m',
-    }
-  );
+  const newToken = {
+    uid: user.id,
+    username: user.username,
+    role: user.role,
+    refresh_token: user.refresh_token,
+  };
+
+  const token = JWT.sign(newToken, process.env['JWT_SECRET'], {
+    expiresIn: '10s',
+  });
   req.response.cookie('Authorization', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 14,
   });
-  return token;
+  return newToken;
+}
+
+async function checkRefreshToken(prisma, authorization) {
+  const token = JWT.decode(authorization);
+  const user = await prisma.user({ id: token.uid }).catch(error => {
+    console.log('checkRefreshToken: ', token.uid, { error });
+    return false;
+  });
+
+  if (user && user.refresh_token === token.refresh_token) return user;
+  return false;
 }
 
 async function refreshToken(prisma, authorization, req) {
-  const token = JWT.decode(authorization);
-  const user = await prisma.user({ id: token.uid });
-  if (user && user.refresh_token === token.refresh_token) {
-    userTokenCreate(user, req);
-    return user.role;
+  const user = await checkRefreshToken(prisma, authorization);
+  if (user !== false) {
+    return await userTokenCreate(user, req);
   }
   await req.response.clearCookie('Authorization');
   return null;
@@ -33,13 +40,17 @@ async function refreshToken(prisma, authorization, req) {
 
 module.exports = {
   userTokenCreate,
-  tokenCheck: function(req, authorization, prisma) {
+  tokenCheck: async function(req, prisma, authorization, isSocket) {
     if (!authorization) return null;
+    if (isSocket) {
+      const user = checkRefreshToken(prisma, authorization);
+      if (user !== false) return user.role;
+    }
     try {
-      const jwt = JWT.verify(authorization, process.env['JWT_SECRET']);
-      return jwt;
+      return JWT.verify(authorization, process.env['JWT_SECRET']);
     } catch (e) {
-      if (e.name === 'TokenExpiredError')
+      // req.connection Don't refresh if it's a websocket
+      if (!req.connection && e.name === 'TokenExpiredError')
         return refreshToken(prisma, authorization, req);
       return null;
     }

@@ -4,7 +4,7 @@ const { userTokenCreate } = require('../../jwt');
 
 module.exports = {
   login: async (root, { username, password }, context) => {
-    const user = await context.prisma.user({ username });
+    const user = await context.prisma.user({ username: username });
 
     if (!user) {
       throw new Error('Invalid Login');

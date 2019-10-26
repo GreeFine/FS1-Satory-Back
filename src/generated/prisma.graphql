@@ -16,8 +16,9 @@ type Event {
   id: ID!
   title: String!
   content: String!
-  author: User
+  author: User!
   participants(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  date: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -32,8 +33,9 @@ input EventCreateInput {
   id: ID
   title: String!
   content: String!
-  author: UserCreateOneWithoutMyeventsInput
+  author: UserCreateOneWithoutMyeventsInput!
   participants: UserCreateManyWithoutEventsInput
+  date: DateTime!
 }
 
 input EventCreateManyWithoutAuthorInput {
@@ -51,13 +53,15 @@ input EventCreateWithoutAuthorInput {
   title: String!
   content: String!
   participants: UserCreateManyWithoutEventsInput
+  date: DateTime!
 }
 
 input EventCreateWithoutParticipantsInput {
   id: ID
   title: String!
   content: String!
-  author: UserCreateOneWithoutMyeventsInput
+  author: UserCreateOneWithoutMyeventsInput!
+  date: DateTime!
 }
 
 type EventEdge {
@@ -72,6 +76,8 @@ enum EventOrderByInput {
   title_DESC
   content_ASC
   content_DESC
+  date_ASC
+  date_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -82,6 +88,7 @@ type EventPreviousValues {
   id: ID!
   title: String!
   content: String!
+  date: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -129,6 +136,14 @@ input EventScalarWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -171,18 +186,21 @@ input EventSubscriptionWhereInput {
 input EventUpdateInput {
   title: String
   content: String
-  author: UserUpdateOneWithoutMyeventsInput
+  author: UserUpdateOneRequiredWithoutMyeventsInput
   participants: UserUpdateManyWithoutEventsInput
+  date: DateTime
 }
 
 input EventUpdateManyDataInput {
   title: String
   content: String
+  date: DateTime
 }
 
 input EventUpdateManyMutationInput {
   title: String
   content: String
+  date: DateTime
 }
 
 input EventUpdateManyWithoutAuthorInput {
@@ -218,12 +236,14 @@ input EventUpdateWithoutAuthorDataInput {
   title: String
   content: String
   participants: UserUpdateManyWithoutEventsInput
+  date: DateTime
 }
 
 input EventUpdateWithoutParticipantsDataInput {
   title: String
   content: String
-  author: UserUpdateOneWithoutMyeventsInput
+  author: UserUpdateOneRequiredWithoutMyeventsInput
+  date: DateTime
 }
 
 input EventUpdateWithWhereUniqueWithoutAuthorInput {
@@ -295,6 +315,14 @@ input EventWhereInput {
   participants_every: UserWhereInput
   participants_some: UserWhereInput
   participants_none: UserWhereInput
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -383,8 +411,8 @@ type User {
   role: Role!
   createdAt: DateTime!
   updatedAt: DateTime!
-  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
   myevents(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
+  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
 }
 
 type UserConnection {
@@ -399,8 +427,8 @@ input UserCreateInput {
   username: String!
   password: String!
   role: Role
-  events: EventCreateManyWithoutParticipantsInput
   myevents: EventCreateManyWithoutAuthorInput
+  events: EventCreateManyWithoutParticipantsInput
 }
 
 input UserCreateManyWithoutEventsInput {
@@ -568,8 +596,8 @@ input UserUpdateInput {
   username: String
   password: String
   role: Role
-  events: EventUpdateManyWithoutParticipantsInput
   myevents: EventUpdateManyWithoutAuthorInput
+  events: EventUpdateManyWithoutParticipantsInput
 }
 
 input UserUpdateManyDataInput {
@@ -603,12 +631,10 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateOneWithoutMyeventsInput {
+input UserUpdateOneRequiredWithoutMyeventsInput {
   create: UserCreateWithoutMyeventsInput
   update: UserUpdateWithoutMyeventsDataInput
   upsert: UserUpsertWithoutMyeventsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
@@ -721,12 +747,12 @@ input UserWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  events_every: EventWhereInput
-  events_some: EventWhereInput
-  events_none: EventWhereInput
   myevents_every: EventWhereInput
   myevents_some: EventWhereInput
   myevents_none: EventWhereInput
+  events_every: EventWhereInput
+  events_some: EventWhereInput
+  events_none: EventWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

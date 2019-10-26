@@ -3,13 +3,15 @@ type Mutation {
   login(username: String!, password: String!): User!
   logout: String!
   createUser(name: String!): User!
-  createEvent(title: String!, content: String!): Event!
+  createEvent(title: String!, content: String!, date: DateTime!): Event!
   deleteEvent(id: ID!): Event!
+  addParticipants(user_id: ID!, event_id: ID!): Event!
   updateRole(username: String!, role: Role!): User!
 }
 
 enum Role {
   ADMIN
+  MODERATOR
   USER
   GUEST
 }

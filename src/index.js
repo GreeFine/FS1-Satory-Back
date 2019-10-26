@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
 const Subscription = require('./resolvers/subscription');
+const Types = require('./resolvers/types');
 
 const { permissions, getJWT } = require('./permissions');
 const { prisma } = require('./generated/prisma-client');
@@ -18,22 +19,25 @@ const resolvers = {
   Query,
   Mutation,
   Subscription,
+  ...Types,
 };
+
+const db = new PrismaBinding({
+  typeDefs: './src/generated/prisma.graphql',
+  endpoint: `http://${process.env.PRISMA_HOST}:4466`,
+  secret: 'fs1-admin-pass!',
+  debug: true,
+});
 
 const server = new GraphQLServer({
   typeDefs: './src/schema/schema.graphql',
   resolvers,
   middlewares: [permissions],
-  context: req => ({
+  context: async req => ({
     ...req,
     prisma,
-    db: new PrismaBinding({
-      typeDefs: './src/generated/prisma.graphql',
-      endpoint: `http://${process.env.PRISMA_HOST}:4466`,
-      secret: 'fs1-admin-pass!',
-      debug: true,
-    }),
-    jwt: getJWT(req, prisma),
+    jwt: await getJWT(req, prisma),
+    db: db,
   }),
 });
 
@@ -41,7 +45,11 @@ const options = {
   port: process.env.NODE_ENV === 'test' ? 0 : 4000,
   cors: {
     credentials: true,
-    origin: ['http://localhost:3000', 'http://greefine.ovh'],
+    origin: [
+      'http://localhost:3000',
+      'http://greefine.ovh',
+      'http://greefine.fr',
+    ],
   },
   subscriptions: {
     onConnect: async (connectionParams, webSocket) => {

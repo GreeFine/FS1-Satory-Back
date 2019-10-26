@@ -6,20 +6,21 @@ type User {
   role: Role! @default(value: GUEST)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  events: [Event!] @relation(name: "Participants")
-  myevents: [Event!] @relation(name: "Author")
+  myevents: [Event!]! @relation(name: "Author")
+  events: [Event!]! @relation(name: "Participants")
 }
 
 type Event {
   id: ID! @id
   title: String!
   content: String!
-  # published: Boolean! @default(value: false)
-  author: User @relation(link: INLINE, name: "Author")
+  author: User! @relation(link: INLINE, name: "Author")
   participants: [User!]! @relation(link: TABLE, name: "Participants")
+  date: DateTime!
 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  # published: Boolean! @default(value: false)
 }
 
 enum Role {
