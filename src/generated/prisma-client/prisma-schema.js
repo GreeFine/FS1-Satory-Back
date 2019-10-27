@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateEvent {
+/* GraphQL */ `type AggregateComment {
+  count: Int!
+}
+
+type AggregateEvent {
   count: Int!
 }
 
@@ -15,6 +19,233 @@ type BatchPayload {
   count: Long!
 }
 
+type Comment {
+  id: ID!
+  content: String!
+  author: User!
+  event: Event!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  id: ID
+  content: String!
+  author: UserCreateOneInput!
+  event: EventCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyWithoutEventInput {
+  create: [CommentCreateWithoutEventInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutEventInput {
+  id: ID
+  content: String!
+  author: UserCreateOneInput!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  content_ASC
+  content_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateInput {
+  content: String
+  author: UserUpdateOneRequiredInput
+  event: EventUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateManyDataInput {
+  content: String
+}
+
+input CommentUpdateManyMutationInput {
+  content: String
+}
+
+input CommentUpdateManyWithoutEventInput {
+  create: [CommentCreateWithoutEventInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutEventInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentUpdateWithoutEventDataInput {
+  content: String
+  author: UserUpdateOneRequiredInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutEventInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutEventDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutEventInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutEventDataInput!
+  create: CommentCreateWithoutEventInput!
+}
+
+input CommentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  author: UserWhereInput
+  event: EventWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
+input CommentWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 type Event {
@@ -23,6 +254,7 @@ type Event {
   content: String!
   author: User!
   participants(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   date: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -40,6 +272,7 @@ input EventCreateInput {
   content: String!
   author: UserCreateOneWithoutMyeventsInput!
   participants: UserCreateManyWithoutEventsInput
+  comments: CommentCreateManyWithoutEventInput
   date: DateTime!
 }
 
@@ -53,10 +286,25 @@ input EventCreateManyWithoutParticipantsInput {
   connect: [EventWhereUniqueInput!]
 }
 
+input EventCreateOneWithoutCommentsInput {
+  create: EventCreateWithoutCommentsInput
+  connect: EventWhereUniqueInput
+}
+
 input EventCreateWithoutAuthorInput {
   id: ID
   title: String!
   content: String!
+  participants: UserCreateManyWithoutEventsInput
+  comments: CommentCreateManyWithoutEventInput
+  date: DateTime!
+}
+
+input EventCreateWithoutCommentsInput {
+  id: ID
+  title: String!
+  content: String!
+  author: UserCreateOneWithoutMyeventsInput!
   participants: UserCreateManyWithoutEventsInput
   date: DateTime!
 }
@@ -66,6 +314,7 @@ input EventCreateWithoutParticipantsInput {
   title: String!
   content: String!
   author: UserCreateOneWithoutMyeventsInput!
+  comments: CommentCreateManyWithoutEventInput
   date: DateTime!
 }
 
@@ -193,6 +442,7 @@ input EventUpdateInput {
   content: String
   author: UserUpdateOneRequiredWithoutMyeventsInput
   participants: UserUpdateManyWithoutEventsInput
+  comments: CommentUpdateManyWithoutEventInput
   date: DateTime
 }
 
@@ -237,9 +487,25 @@ input EventUpdateManyWithWhereNestedInput {
   data: EventUpdateManyDataInput!
 }
 
+input EventUpdateOneRequiredWithoutCommentsInput {
+  create: EventCreateWithoutCommentsInput
+  update: EventUpdateWithoutCommentsDataInput
+  upsert: EventUpsertWithoutCommentsInput
+  connect: EventWhereUniqueInput
+}
+
 input EventUpdateWithoutAuthorDataInput {
   title: String
   content: String
+  participants: UserUpdateManyWithoutEventsInput
+  comments: CommentUpdateManyWithoutEventInput
+  date: DateTime
+}
+
+input EventUpdateWithoutCommentsDataInput {
+  title: String
+  content: String
+  author: UserUpdateOneRequiredWithoutMyeventsInput
   participants: UserUpdateManyWithoutEventsInput
   date: DateTime
 }
@@ -248,6 +514,7 @@ input EventUpdateWithoutParticipantsDataInput {
   title: String
   content: String
   author: UserUpdateOneRequiredWithoutMyeventsInput
+  comments: CommentUpdateManyWithoutEventInput
   date: DateTime
 }
 
@@ -259,6 +526,11 @@ input EventUpdateWithWhereUniqueWithoutAuthorInput {
 input EventUpdateWithWhereUniqueWithoutParticipantsInput {
   where: EventWhereUniqueInput!
   data: EventUpdateWithoutParticipantsDataInput!
+}
+
+input EventUpsertWithoutCommentsInput {
+  update: EventUpdateWithoutCommentsDataInput!
+  create: EventCreateWithoutCommentsInput!
 }
 
 input EventUpsertWithWhereUniqueWithoutAuthorInput {
@@ -320,6 +592,9 @@ input EventWhereInput {
   participants_every: UserWhereInput
   participants_some: UserWhereInput
   participants_none: UserWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   date: DateTime
   date_not: DateTime
   date_in: [DateTime!]
@@ -356,6 +631,12 @@ input EventWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
   createEvent(data: EventCreateInput!): Event!
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
@@ -388,6 +669,9 @@ type PageInfo {
 }
 
 type Query {
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   event(where: EventWhereUniqueInput!): Event
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
@@ -404,6 +688,7 @@ enum Role {
 }
 
 type Subscription {
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -414,10 +699,10 @@ type User {
   username: String!
   password: String!
   role: Role!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   myevents(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -439,6 +724,11 @@ input UserCreateInput {
 input UserCreateManyWithoutEventsInput {
   create: [UserCreateWithoutEventsInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutMyeventsInput {
@@ -596,6 +886,15 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  refresh_token: ID
+  username: String
+  password: String
+  role: Role
+  myevents: EventUpdateManyWithoutAuthorInput
+  events: EventUpdateManyWithoutParticipantsInput
+}
+
 input UserUpdateInput {
   refresh_token: ID
   username: String
@@ -636,6 +935,13 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutMyeventsInput {
   create: UserCreateWithoutMyeventsInput
   update: UserUpdateWithoutMyeventsDataInput
@@ -662,6 +968,11 @@ input UserUpdateWithoutMyeventsDataInput {
 input UserUpdateWithWhereUniqueWithoutEventsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutEventsDataInput!
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMyeventsInput {
@@ -736,6 +1047,12 @@ input UserWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  myevents_every: EventWhereInput
+  myevents_some: EventWhereInput
+  myevents_none: EventWhereInput
+  events_every: EventWhereInput
+  events_some: EventWhereInput
+  events_none: EventWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -752,12 +1069,6 @@ input UserWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  myevents_every: EventWhereInput
-  myevents_some: EventWhereInput
-  myevents_none: EventWhereInput
-  events_every: EventWhereInput
-  events_some: EventWhereInput
-  events_none: EventWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

@@ -9,7 +9,7 @@ function userTokenCreate(user, req) {
   };
 
   const token = JWT.sign(newToken, process.env['JWT_SECRET'], {
-    expiresIn: '10s',
+    expiresIn: process.env['JWT_EXPIRATION'],
   });
   req.response.cookie('Authorization', token, {
     httpOnly: true,
@@ -52,6 +52,7 @@ module.exports = {
       // req.connection Don't refresh if it's a websocket
       if (!req.connection && e.name === 'TokenExpiredError')
         return refreshToken(prisma, authorization, req);
+      console.error(e);
       return null;
     }
   },

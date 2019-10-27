@@ -42,6 +42,12 @@ const canReadEvents = rule({ cache: 'contextual' })(
   }
 );
 
+const canComment = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return ctx.jwt.role !== 'GUEST';
+  }
+);
+
 // Permissions
 
 const permissions = shield({
@@ -51,12 +57,15 @@ const permissions = shield({
     me: isAuthenticated,
   },
   Mutation: {
+    register: isNotAuthenticated,
     login: isNotAuthenticated,
     logout: isAuthenticated,
-    register: isNotAuthenticated,
+    updateUser: isAuthenticated,
     createEvent: and(isAuthenticated, isAdmin),
-    updateRole: and(isAuthenticated, isAdmin),
+    deleteEvent: and(isAuthenticated, isAdmin),
     addParticipants: and(isAuthenticated, isAdmin),
+    createComment: and(isAuthenticated, canComment),
+    deleteComment: and(isAuthenticated, canComment),
   },
   Subscription: {
     event: and(isAuthenticated, canReadEvents),

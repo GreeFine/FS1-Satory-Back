@@ -9,6 +9,7 @@
     "cookie-parser": "^1.4.4",
     "cookies": "^0.7.3",
     "dotenv": "^8.1.0",
+    "fetch-cookie": "^0.7.3",
     "graphql-shield": "^6.1.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",

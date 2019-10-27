@@ -15,8 +15,8 @@ module.exports = {
   deleteEvent(root, { id }, context) {
     return context.prisma.deleteEvent(id);
   },
-  async addParticipants(root, { event_id, user_id }, context) {
-    return await context.prisma.updateEvent({
+  addParticipants(root, { event_id, user_id }, context) {
+    return context.prisma.updateEvent({
       data: {
         participants: {
           connect: {

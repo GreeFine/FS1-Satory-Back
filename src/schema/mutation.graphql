@@ -2,11 +2,14 @@ type Mutation {
   register(username: String!, password: String!): User!
   login(username: String!, password: String!): User!
   logout: String!
-  createUser(name: String!): User!
+  updateUser(id: ID, username: String, password: String, role: Role): User!
+
   createEvent(title: String!, content: String!, date: DateTime!): Event!
   deleteEvent(id: ID!): Event!
   addParticipants(user_id: ID!, event_id: ID!): Event!
-  updateRole(username: String!, role: Role!): User!
+
+  createComment(title: String!, content: String!): Comment!
+  deleteComment(id: ID!): Comment!
 }
 
 enum Role {

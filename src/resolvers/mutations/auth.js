@@ -2,18 +2,29 @@ const bcrypt = require('bcryptjs');
 var validator = require('validator');
 const { userTokenCreate } = require('../../jwt');
 
+function validateUser(username, password) {
+  if (
+    username !== undefined &&
+    (!validator.isAlphanumeric(username) ||
+      !validator.isLength(username, { min: 3, max: 20 }))
+  )
+    throw new Error('Invalid Username');
+  if (password !== undefined && !validator.isLength(password, { min: 6 }))
+    throw new Error('Invalid Password');
+}
+
 module.exports = {
   login: async (root, { username, password }, context) => {
     const user = await context.prisma.user({ username: username });
 
     if (!user) {
-      throw new Error('Invalid Login');
+      throw new Error('Invalid username');
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error('Invalid Password');
+      throw new Error('Invalid password');
     }
 
     userTokenCreate(user, context);
@@ -21,13 +32,7 @@ module.exports = {
     return user;
   },
   register: async (root, { username, password }, context) => {
-    if (
-      !validator.isAlpha(username) ||
-      !validator.isLength(username, { min: 3, max: 20 })
-    )
-      throw new Error('Invalid Username');
-    if (!validator.isLength(password, { min: 6 }))
-      throw new Error('Invalid Password');
+    validateUser(username, password);
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await context.prisma.createUser({
@@ -43,10 +48,18 @@ module.exports = {
     context.response.clearCookie('Authorization');
     return 'Success';
   },
-  updateRole(root, args, context) {
+  updateUser(root, args, context) {
+    if ((args.role || args.id) && context.jwt.role !== 'ADMIN') {
+      return Error(
+        `Only an admin can update ${args.role ? 'roles' : 'another user'}`
+      );
+    }
+    validateUser(args.username, args.password);
+    const id = args.id || context.jwt.uid;
+    delete args.id;
     return context.prisma.updateUser({
-      where: { username: args.username },
-      data: { role: args.role },
+      where: { id: id },
+      data: args,
     });
   },
 };

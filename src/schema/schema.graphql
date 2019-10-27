@@ -8,6 +8,8 @@ type User {
   role: String!
   myevents: [Event!]!
   events: [Event!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Event {
@@ -17,4 +19,16 @@ type Event {
   date: DateTime!
   author: User!
   participants: [User!]!
+  comments: [Comment!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  author: User!
+  event: Event!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
