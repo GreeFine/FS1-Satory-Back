@@ -18,16 +18,16 @@ async function tokenCheck(req, prisma, authorization, isSocket) {
   if (!authorization) return null;
   if (isSocket) {
     const user = await checkRefreshToken(prisma, authorization);
-    if (user !== false) return user;
-  }
-  try {
-    return JWT.verify(authorization, process.env['JWT_SECRET']);
-  } catch (error) {
-    // req.connection Don't refresh if it's a websocket
-    if (!req.connection && error.name === 'TokenExpiredError')
-      return await refreshToken(prisma, authorization, req);
-    console.error(error);
-    return null;
+    return user;
+  } else {
+    try {
+      return JWT.verify(authorization, process.env['JWT_SECRET']);
+    } catch (error) {
+      if (error.name === 'TokenExpiredError')
+        return await refreshToken(prisma, authorization, req);
+      console.error(error);
+      return null;
+    }
   }
 }
 
@@ -57,17 +57,17 @@ async function checkRefreshToken(prisma, authorization) {
   const token = JWT.decode(authorization);
   const user = await prisma.user({ id: token.uid }).catch(error => {
     console.error('Invalid user in checkRefreshToken: ', token.uid, { error });
-    return false;
+    return null;
   });
 
   if (user && user.refresh_token === token.refresh_token)
     return userToToken(user);
-  return false;
+  return null;
 }
 
 async function refreshToken(prisma, authorization, req) {
   const user = await checkRefreshToken(prisma, authorization);
-  if (user !== false) {
+  if (user !== null) {
     return userTokenCreate(user, req);
   }
   await req.response.clearCookie('Authorization');

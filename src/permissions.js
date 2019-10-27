@@ -1,4 +1,4 @@
-const { rule, shield, and, or, not } = require('graphql-shield');
+const { rule, shield, or, not, chain } = require('graphql-shield');
 const { getJWT } = require('./jwt');
 
 const isNotAuthenticated = rule({ cache: 'contextual' })(
@@ -23,6 +23,7 @@ const isAdmin = rule({ cache: 'contextual' })(
 
 const canReadEvents = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
+    console.log('????why');
     return ctx.jwt.role !== 'GUEST';
   }
 );
@@ -39,25 +40,25 @@ const permissions = shield(
   {
     Query: {
       me: isAuthenticated,
-      events: and(isAuthenticated, canReadEvents),
-      users: and(isAuthenticated, isAdmin),
+      events: chain(isAuthenticated, canReadEvents),
+      users: chain(isAuthenticated, isAdmin),
     },
     Mutation: {
       register: isNotAuthenticated,
       login: isNotAuthenticated,
       logout: isAuthenticated,
       updateUser: isAuthenticated,
-      createEvent: and(isAuthenticated, isAdmin),
-      deleteEvent: and(isAuthenticated, isAdmin),
-      addParticipants: and(isAuthenticated, isAdmin),
-      createComment: and(isAuthenticated, canComment),
-      deleteComment: and(isAuthenticated, canComment),
+      createEvent: chain(isAuthenticated, isAdmin),
+      deleteEvent: chain(isAuthenticated, isAdmin),
+      addParticipants: chain(isAuthenticated, isAdmin),
+      createComment: chain(isAuthenticated, canComment),
+      deleteComment: chain(isAuthenticated, canComment),
     },
     Subscription: {
-      event: and(isAuthenticated, canReadEvents),
-      eventDeleted: and(isAuthenticated, canReadEvents),
-      comment: and(isAuthenticated, canReadEvents),
-      commentDeleted: and(isAuthenticated, canReadEvents),
+      event: chain(isAuthenticated, canReadEvents),
+      eventDeleted: chain(isAuthenticated, canReadEvents),
+      comment: chain(isAuthenticated, canReadEvents),
+      commentDeleted: chain(isAuthenticated, canReadEvents),
     },
   },
   { allowExternalErrors: true, debug: true }
