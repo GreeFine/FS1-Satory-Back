@@ -48,7 +48,7 @@ module.exports = {
     context.response.clearCookie('Authorization');
     return 'Success';
   },
-  updateUser(root, args, context) {
+  updateUser: async (root, args, context) => {
     if ((args.role || args.id) && context.jwt.role !== 'ADMIN') {
       return Error(
         `Only an admin can update ${args.role ? 'roles' : 'another user'}`
@@ -58,6 +58,10 @@ module.exports = {
     validateUser(args.username, args.password);
     const id = args.id || context.jwt.uid;
     delete args.id;
+    if (args.password) {
+      const crypt_password = await bcrypt.hash(args.password, 10);
+      args.password = crypt_password;
+    }
     return context.prisma.updateUser({
       where: { id: id },
       data: args,

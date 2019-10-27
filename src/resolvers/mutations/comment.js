@@ -1,5 +1,5 @@
 module.exports = {
-  createComment(root, { title, event_id, content }, context) {
+  createComment(root, { event_id, content }, context) {
     return context.prisma.createComment({
       content: content,
       author: {

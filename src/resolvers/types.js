@@ -30,5 +30,21 @@ module.exports = {
         })
         .participants();
     },
+    comments(root, args, context) {
+      return context.prisma
+        .event({
+          id: root.id,
+        })
+        .comments();
+    },
+  },
+  Comment: {
+    author(root, args, context) {
+      return context.prisma
+        .comment({
+          id: root.id,
+        })
+        .author();
+    },
   },
 };

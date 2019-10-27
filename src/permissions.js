@@ -39,10 +39,9 @@ const canComment = rule({ cache: 'contextual' })(
 
 const permissions = shield({
   Query: {
+    me: isAuthenticated,
     events: and(isAuthenticated, canReadEvents),
     users: and(isAuthenticated, isAdmin),
-
-    me: isAuthenticated,
   },
   Mutation: {
     register: isNotAuthenticated,

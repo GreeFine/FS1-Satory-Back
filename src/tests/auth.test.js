@@ -149,7 +149,10 @@ test('Update user', async () => {
     password: newPassword,
   });
   expect(response.data).toEqual({
-    updateUser: { username: newUsername, role: 'GUEST' },
+    updateUser: {
+      username: newUsername,
+      role: 'GUEST',
+    },
   });
 });
 
@@ -166,7 +169,7 @@ test('Update user with invalid data', async () => {
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        ready_utils.errorMessage('Not Authorised!', 'updateUser')
+        ready_utils.errorMessage('Invalid Username', 'updateUser')
       );
     });
 
@@ -209,6 +212,9 @@ test('Admin stuff', async () => {
     username: newUsername,
   });
   expect(response.data).toEqual({
-    updateUser: { username: newUsername, role: 'USER' },
+    updateUser: {
+      username: newUsername,
+      role: 'USER',
+    },
   });
 });
