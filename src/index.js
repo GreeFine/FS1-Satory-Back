@@ -26,7 +26,6 @@ const db = new PrismaBinding({
   typeDefs: './src/generated/prisma.graphql',
   endpoint: `http://${process.env.PRISMA_HOST}:4466`,
   secret: 'fs1-admin-pass!',
-  debug: true,
 });
 
 const server = new GraphQLServer({
@@ -80,7 +79,7 @@ module.exports.resetDB = function() {
         return;
       }
       if (stdout) console.log(`stdout: ${stdout}`);
-      else if (stderr) console.log(`stderr: ${stderr}`);
+      else if (stderr) console.error(`stderr: ${stderr}`);
       resolve();
     });
   });

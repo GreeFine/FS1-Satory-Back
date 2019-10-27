@@ -23,8 +23,43 @@ module.exports = {
         selectionSet
       );
     },
-    resolve: (payload, args, context, info) => {
+    resolve: (payload, args, ctx, info) => {
       return payload ? payload.event.previousValues : payload; // sanity check
+    },
+  },
+  comment: {
+    subscribe: (parent, args, ctx, info) => {
+      return ctx.db.subscription.comment(
+        {
+          where: {
+            mutation_in: ['CREATED', 'UPDATED'],
+            node: {
+              event: {
+                author: {
+                  id: ctx.jwt.uid,
+                },
+              },
+            },
+          },
+        },
+        info
+      );
+    },
+  },
+  commentDeleted: {
+    subscribe: (parent, args, ctx, info) => {
+      const selectionSet = `{ previousValues { id title } }`;
+      return ctx.db.subscription.comment(
+        {
+          where: {
+            mutation_in: ['DELETED'],
+          },
+        },
+        selectionSet
+      );
+    },
+    resolve: (payload, args, ctx, info) => {
+      return payload ? payload.comment.previousValues : payload; // sanity check
     },
   },
 };

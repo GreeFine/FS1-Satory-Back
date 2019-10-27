@@ -4,8 +4,9 @@ const cookie = require('cookie');
 async function getJWT(req, prisma) {
   let authorization = undefined;
   let isSocket = false;
-  if (req.connection && req.connection.context.cookie) {
-    authorization = cookie.parse(req.connection.context.cookie).Authorization;
+  if (req.connection) {
+    if (req.connection.context.cookie)
+      authorization = cookie.parse(req.connection.context.cookie).Authorization;
     isSocket = true;
   } else if (req.request.cookies)
     authorization = req.request.cookies.Authorization;
@@ -16,27 +17,31 @@ async function getJWT(req, prisma) {
 async function tokenCheck(req, prisma, authorization, isSocket) {
   if (!authorization) return null;
   if (isSocket) {
-    const user = checkRefreshToken(prisma, authorization);
-    if (user !== false) return user.role;
+    const user = await checkRefreshToken(prisma, authorization);
+    if (user !== false) return user;
   }
   try {
     return JWT.verify(authorization, process.env['JWT_SECRET']);
-  } catch (e) {
+  } catch (error) {
     // req.connection Don't refresh if it's a websocket
-    if (!req.connection && e.name === 'TokenExpiredError')
-      return refreshToken(prisma, authorization, req);
-    console.error(e);
+    if (!req.connection && error.name === 'TokenExpiredError')
+      return await refreshToken(prisma, authorization, req);
+    console.error(error);
     return null;
   }
 }
 
-function userTokenCreate(user, req) {
-  const newToken = {
+function userToToken(user) {
+  return {
     uid: user.id,
     username: user.username,
     role: user.role,
     refresh_token: user.refresh_token,
   };
+}
+
+function userTokenCreate(user, req) {
+  const newToken = userToToken(user);
 
   const token = JWT.sign(newToken, process.env['JWT_SECRET'], {
     expiresIn: process.env['JWT_EXPIRATION'],
@@ -55,14 +60,15 @@ async function checkRefreshToken(prisma, authorization) {
     return false;
   });
 
-  if (user && user.refresh_token === token.refresh_token) return user;
+  if (user && user.refresh_token === token.refresh_token)
+    return userToToken(user);
   return false;
 }
 
 async function refreshToken(prisma, authorization, req) {
   const user = await checkRefreshToken(prisma, authorization);
   if (user !== false) {
-    return await userTokenCreate(user, req);
+    return userTokenCreate(user, req);
   }
   await req.response.clearCookie('Authorization');
   return null;

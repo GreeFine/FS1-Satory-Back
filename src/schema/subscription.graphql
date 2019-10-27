@@ -3,4 +3,6 @@
 type Subscription {
   event: EventSubscriptionPayload!
   eventDeleted: Event!
+  comment: CommentSubscriptionPayload!
+  commentDeleted: Comment!
 }
