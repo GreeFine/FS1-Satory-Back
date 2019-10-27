@@ -1,4 +1,34 @@
 const JWT = require('jsonwebtoken');
+const cookie = require('cookie');
+
+async function getJWT(req, prisma) {
+  let authorization = undefined;
+  let isSocket = false;
+  if (req.connection && req.connection.context.cookie) {
+    authorization = cookie.parse(req.connection.context.cookie).Authorization;
+    isSocket = true;
+  } else if (req.request.cookies)
+    authorization = req.request.cookies.Authorization;
+
+  return await tokenCheck(req, prisma, authorization, isSocket);
+}
+
+async function tokenCheck(req, prisma, authorization, isSocket) {
+  if (!authorization) return null;
+  if (isSocket) {
+    const user = checkRefreshToken(prisma, authorization);
+    if (user !== false) return user.role;
+  }
+  try {
+    return JWT.verify(authorization, process.env['JWT_SECRET']);
+  } catch (e) {
+    // req.connection Don't refresh if it's a websocket
+    if (!req.connection && e.name === 'TokenExpiredError')
+      return refreshToken(prisma, authorization, req);
+    console.error(e);
+    return null;
+  }
+}
 
 function userTokenCreate(user, req) {
   const newToken = {
@@ -21,7 +51,7 @@ function userTokenCreate(user, req) {
 async function checkRefreshToken(prisma, authorization) {
   const token = JWT.decode(authorization);
   const user = await prisma.user({ id: token.uid }).catch(error => {
-    console.log('checkRefreshToken: ', token.uid, { error });
+    console.error('Invalid user in checkRefreshToken: ', token.uid, { error });
     return false;
   });
 
@@ -40,20 +70,5 @@ async function refreshToken(prisma, authorization, req) {
 
 module.exports = {
   userTokenCreate,
-  tokenCheck: async function(req, prisma, authorization, isSocket) {
-    if (!authorization) return null;
-    if (isSocket) {
-      const user = checkRefreshToken(prisma, authorization);
-      if (user !== false) return user.role;
-    }
-    try {
-      return JWT.verify(authorization, process.env['JWT_SECRET']);
-    } catch (e) {
-      // req.connection Don't refresh if it's a websocket
-      if (!req.connection && e.name === 'TokenExpiredError')
-        return refreshToken(prisma, authorization, req);
-      console.error(e);
-      return null;
-    }
-  },
+  getJWT,
 };

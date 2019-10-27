@@ -54,6 +54,7 @@ module.exports = {
         `Only an admin can update ${args.role ? 'roles' : 'another user'}`
       );
     }
+
     validateUser(args.username, args.password);
     const id = args.id || context.jwt.uid;
     delete args.id;

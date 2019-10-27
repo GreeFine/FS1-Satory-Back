@@ -1,30 +1,15 @@
 require('fetch-cookie/node-fetch')(require('node-fetch'));
-const { request, GraphQLClient } = require('graphql-request');
-const { serverStart, resetDB } = require('../index');
-const cookie = require('cookie');
-const JWT = require('jsonwebtoken');
+const utils_promise = require('./utils');
 
-let server = null;
-let gqlClient = null;
-let myToken = null;
-
+let ready_utils;
 beforeAll(async () => {
-  const reset = await resetDB();
-  server = await serverStart();
-  host = `http://127.0.0.1:${server.address().port}`;
-  gqlClient = new GraphQLClient(host, { credentials: 'include', mode: 'cors' });
+  ready_utils = await utils_promise;
 });
 
-afterAll(async () => {
-  server.close();
-});
-
-function myTokenToAdmin(secret) {
-  const actualToken = cookie.parse(myToken).Authorization;
-  const decoded_token = JWT.decode(actualToken);
-  decoded_token.role = 'ADMIN';
-  delete decoded_token.exp;
-  return JWT.sign(decoded_token, secret, { expiresIn: '4s' });
+function randString() {
+  return Math.random()
+    .toString(36)
+    .substr(2);
 }
 
 const registerMutation = `
@@ -60,37 +45,13 @@ const logout = `
   }
 `;
 
-const queryMe = `
-  query {
-    me {
-      username
-      role
-    }
-  }
-`;
-
-const username = 'Red2';
-const password = 'Paswor!d';
-const newUsername = 'testoos';
-const newPassword = 'pasWooed!';
-
-function errorMessage(message, path) {
-  return [
-    {
-      message: message,
-      locations: [
-        {
-          line: 3,
-          column: 5,
-        },
-      ],
-      path: [path],
-    },
-  ];
-}
+const username = randString();
+const password = randString();
+const newUsername = randString();
+const newPassword = randString();
 
 test('Register user', async () => {
-  const response = await gqlClient.request(registerMutation, {
+  const response = await ready_utils.gqlClient.request(registerMutation, {
     username,
     password,
   });
@@ -98,27 +59,27 @@ test('Register user', async () => {
 });
 
 test('Invalid user register', async () => {
-  const response = await gqlClient
+  const response = await ready_utils.gqlClient
     .request(registerMutation, { username: '', password })
     .catch(error => {
       expect(error.response.errors).toEqual(
-        errorMessage('Invalid Username', 'register')
+        ready_utils.errorMessage('Invalid Username', 'register')
       );
     });
 });
 
 test('Invalid password register', async () => {
-  const response = await gqlClient
+  const response = await ready_utils.gqlClient
     .request(registerMutation, { username, password: '' })
     .catch(error => {
       expect(error.response.errors).toEqual(
-        errorMessage('Invalid Password', 'register')
+        ready_utils.errorMessage('Invalid Password', 'register')
       );
     });
 });
 
 test('Login', async () => {
-  const response = await gqlClient.rawRequest(loginMutation, {
+  const response = await ready_utils.gqlClient.rawRequest(loginMutation, {
     username,
     password,
   });
@@ -128,17 +89,16 @@ test('Login', async () => {
   expect(response.headers).toBeDefined();
   const set_cookie = await response.headers.get('set-cookie');
   expect(set_cookie).toContain('Authorization');
-  myToken = set_cookie;
 });
 
 test('Login Invalid Username', async () => {
   let errored = false;
-  const response = await gqlClient
+  const response = await ready_utils.gqlClient
     .request(loginMutation, { username: '', password: 'watever' })
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        errorMessage('Invalid username', 'login')
+        ready_utils.errorMessage('Invalid username', 'login')
       );
     });
   expect(errored).toBe(true);
@@ -146,45 +106,45 @@ test('Login Invalid Username', async () => {
 
 test('Login Invalid password', async () => {
   let errored = false;
-  const response = await gqlClient
+  const response = await ready_utils.gqlClient
     .request(loginMutation, { username, password: '' })
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        errorMessage('Invalid password', 'login')
+        ready_utils.errorMessage('Invalid password', 'login')
       );
     });
   expect(errored).toBe(true);
 });
 
 test('Logout', async () => {
-  gqlClient.options.headers = {
-    Cookie: myToken,
+  ready_utils.gqlClient.options.headers = {
+    Cookie: ready_utils.myTokenToCookie(),
   };
 
-  const response = await gqlClient.rawRequest(logout);
+  const response = await ready_utils.gqlClient.rawRequest(logout);
   expect(response.data).toEqual({ logout: 'Success' });
 });
 
 test('Logout error removing token', async () => {
-  gqlClient.options.headers = {};
+  ready_utils.gqlClient.options.headers = {};
 
   let errored = false;
-  const result = await gqlClient.rawRequest(logout).catch(error => {
+  const result = await ready_utils.gqlClient.rawRequest(logout).catch(error => {
     errored = true;
     expect(error.response.errors).toEqual(
-      errorMessage('Not connected.', 'logout')
+      ready_utils.errorMessage('Not connected.', 'logout')
     );
   });
   expect(errored).toBe(true);
 });
 
 test('Update user', async () => {
-  gqlClient.options.headers = {
-    Cookie: myToken,
+  ready_utils.gqlClient.options.headers = {
+    Cookie: ready_utils.myTokenToCookie(),
   };
 
-  const response = await gqlClient.rawRequest(updateUserMutation, {
+  const response = await ready_utils.gqlClient.rawRequest(updateUserMutation, {
     username: newUsername,
     password: newPassword,
   });
@@ -194,95 +154,59 @@ test('Update user', async () => {
 });
 
 test('Update user with invalid data', async () => {
-  gqlClient.options.headers = {
-    Cookie: myToken,
+  ready_utils.gqlClient.options.headers = {
+    Cookie: ready_utils.myTokenToCookie(),
   };
 
   let errored = false;
-  await gqlClient
+  await ready_utils.gqlClient
     .rawRequest(updateUserMutation, {
       username: 'w',
     })
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        errorMessage('Not Authorised!', 'updateUser')
+        ready_utils.errorMessage('Not Authorised!', 'updateUser')
       );
     });
 
-  await gqlClient
+  await ready_utils.gqlClient
     .rawRequest(updateUserMutation, {
       role: 'ADMIN',
     })
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        errorMessage('Only an admin can update roles', 'updateUser')
+        ready_utils.errorMessage('Only an admin can update roles', 'updateUser')
       );
     });
 
-  await gqlClient
+  await ready_utils.gqlClient
     .rawRequest(updateUserMutation, {
       id: 'somet21312OtherId',
     })
     .catch(error => {
       errored = true;
       expect(error.response.errors).toEqual(
-        errorMessage('Only an admin can update another user', 'updateUser')
+        ready_utils.errorMessage(
+          'Only an admin can update another user',
+          'updateUser'
+        )
       );
     });
 
   expect(errored).toBe(true);
-});
-
-test('Mess JWT data', async () => {
-  let errored = false;
-
-  const maliciousToken = myTokenToAdmin('invalidsecret');
-  gqlClient.options.headers = {
-    Cookie: `Authorization=${maliciousToken}`,
-  };
-
-  await gqlClient
-    .rawRequest(updateUserMutation, {
-      id: 'somet21312OtherId',
-    })
-    .catch(error => {
-      errored = true;
-      expect(error.response.errors).toEqual(
-        errorMessage('Not connected.', 'updateUser')
-      );
-    });
-
-  expect(errored).toBe(true);
-});
-
-test('JWT refresh', async () => {
-  let errored = false;
-
-  const validToken = myTokenToAdmin(process.env.JWT_SECRET);
-  gqlClient.options.headers = {
-    Cookie: `Authorization=${validToken}`,
-  };
-
-  const respons_no_refresh = await gqlClient.rawRequest(queryMe);
-  const no_cookie = await respons_no_refresh.headers.get('set-cookie');
-  expect(no_cookie).toBe(null);
-
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  const respons_with_refresh = await gqlClient.rawRequest(queryMe);
-  const got_cookie = await respons_with_refresh.headers.get('set-cookie');
-  expect(got_cookie).toBeDefined();
 });
 
 test('Admin stuff', async () => {
-  const validToken = myTokenToAdmin(process.env.JWT_SECRET);
-  gqlClient.options.headers = {
+  const validToken = await ready_utils.myTokenToAdmin();
+  ready_utils.gqlClient.options.headers = {
     Cookie: `Authorization=${validToken}`,
   };
 
-  const response = await gqlClient.rawRequest(updateUserMutation, {
+  const response = await ready_utils.gqlClient.rawRequest(updateUserMutation, {
     role: 'USER',
+    username: newUsername,
   });
   expect(response.data).toEqual({
     updateUser: { username: newUsername, role: 'USER' },

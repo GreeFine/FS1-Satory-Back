@@ -1,18 +1,5 @@
 const { rule, shield, and, or, not } = require('graphql-shield');
-const { tokenCheck } = require('./jwt');
-const cookie = require('cookie');
-
-async function getJWT(req, prisma) {
-  let authorization = undefined;
-  let isSocket = false;
-  if (req.connection && req.connection.context.cookie) {
-    authorization = cookie.parse(req.connection.context.cookie).Authorization;
-    isSocket = true;
-  } else if (req.request.cookies)
-    authorization = req.request.cookies.Authorization;
-
-  return await tokenCheck(req, prisma, authorization, isSocket);
-}
+const { getJWT } = require('./jwt');
 
 // Rules
 
@@ -54,6 +41,7 @@ const permissions = shield({
   Query: {
     events: and(isAuthenticated, canReadEvents),
     users: and(isAuthenticated, isAdmin),
+
     me: isAuthenticated,
   },
   Mutation: {
