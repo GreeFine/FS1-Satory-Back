@@ -23,7 +23,6 @@ const isAdmin = rule({ cache: 'contextual' })(
 
 const canReadEvents = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    console.log('????why');
     return ctx.jwt.role !== 'GUEST';
   }
 );
