@@ -24,6 +24,27 @@ Using `docker-compose up -d`
 
 > You can remove the `-d` to be attached to the output
 
+Prisma provide a client that can be used to manage the server, to use it you need to install [Node](https://nodejs.org/en/download/package-manager/), and [Prisma Client](https://www.prisma.io/docs/prisma-client/)
+
+#### Some Command that can be used
+
+```bash
+Usage: prisma COMMAND
+
+Service:
+          deploy  Deploy service changes (or new service)
+      introspect  Introspect database schema(s) of service
+            info  Display service information (endpoints, cluster, ...)
+           token  Create a new service token
+
+Data workflows:
+           admin  Open service endpoints in Prisma Admin
+        generate  Generate a schema or Prisma Bindings
+           reset  Reset the stage data
+```
+
+> All the command can be found executing `prisma --help`
+
 ### Running the tests
 
 We use [Jest](https://jestjs.io/) for our test
