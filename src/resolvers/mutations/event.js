@@ -28,5 +28,19 @@ module.exports = {
         id: eventId
       }
     })
+  },
+  removeParticipants (root, { eventId, userId }, context) {
+    return context.prisma.updateEvent({
+      data: {
+        participants: {
+          disconnect: {
+            id: userId
+          }
+        }
+      },
+      where: {
+        id: eventId
+      }
+    })
   }
 }
