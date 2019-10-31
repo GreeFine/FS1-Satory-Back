@@ -49,13 +49,15 @@ Data workflows:
 
 We use [Jest](https://jestjs.io/) for our test
 
-Simply use `yarn test` to test the application
+You need to first start the server, use ***Starting the application*** section to do that
+
+When the server is started simply use `yarn test` to test the application
 
 > You can provide the aditional parameter: `--collect-coverage` to get coverage
 
 ### Coding style tests
 
-There is no linter for the moment
+We use elsint with the ***standard*** configuration module and you can use the `yarn lint` to test it.
 
 ## Project Architecture
 

@@ -1,16 +1,16 @@
 module.exports = {
-  createComment(root, { event_id, content }, context) {
+  createComment (root, { eventId, content }, context) {
     return context.prisma.createComment({
       content: content,
       author: {
-        connect: { id: context.jwt.uid },
+        connect: { id: context.jwt.uid }
       },
       event: {
-        connect: { id: event_id },
-      },
-    });
+        connect: { id: eventId }
+      }
+    })
   },
-  deleteComment(root, { id }, context) {
-    return context.prisma.deleteComment(id);
-  },
-};
+  deleteComment (root, { id }, context) {
+    return context.prisma.deleteComment(id)
+  }
+}

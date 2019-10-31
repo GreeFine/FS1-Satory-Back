@@ -1,11 +1,11 @@
 module.exports = {
-  events(root, args, context) {
-    return context.prisma.events();
+  events (root, args, context) {
+    return context.prisma.events()
   },
-  users(root, args, context) {
-    return context.prisma.users();
+  users (root, args, context) {
+    return context.prisma.users()
   },
-  me(root, args, context) {
-    return context.prisma.user({ id: context.jwt.uid });
-  },
-};
+  me (root, args, context) {
+    return context.prisma.user({ id: context.jwt.uid })
+  }
+}

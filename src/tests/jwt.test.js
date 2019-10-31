@@ -1,9 +1,10 @@
-const utils_promise = require('./utils');
+/* eslint-disable no-undef */
+const utilsPromise = require('./utils')
 
-let ready_utils;
+let readyUtils
 beforeAll(async () => {
-  ready_utils = await utils_promise;
-});
+  readyUtils = await utilsPromise
+})
 
 const updateUserMutation = `
   mutation updateUsern($id: ID, $role: Role, $username: String, $password: String) {
@@ -12,7 +13,7 @@ const updateUserMutation = `
       role
     }
   }
-`;
+`
 
 const queryMe = `
   query {
@@ -21,43 +22,42 @@ const queryMe = `
       role
     }
   }
-`;
+`
 
 test('Mess JWT data', async () => {
-  let errored = false;
+  let errored = false
 
-  const maliciousToken = await ready_utils.myTokenToAdmin('invalidsecret');
-  ready_utils.gqlClient.options.headers = {
-    Cookie: `Authorization=${maliciousToken}`,
-  };
+  const maliciousToken = await readyUtils.myTokenToAdmin('invalidsecret')
+  readyUtils.gqlClient.options.headers = {
+    Cookie: `Authorization=${maliciousToken}`
+  }
 
-  await ready_utils.gqlClient
+  await readyUtils.gqlClient
     .rawRequest(updateUserMutation, {
-      id: 'somet21312OtherId',
+      id: 'somet21312OtherId'
     })
     .catch(error => {
-      errored = true;
+      errored = true
       expect(error.response.errors).toEqual(
-        ready_utils.errorMessage('Not connected.', 'updateUser')
-      );
-    });
+        readyUtils.errorMessage('Not connected.', 'updateUser')
+      )
+    })
 
-  expect(errored).toBe(true);
-});
+  expect(errored).toBe(true)
+})
 
 test('JWT refresh', async () => {
-  let errored = false;
-  const validToken = await ready_utils.myTokenToAdmin();
-  ready_utils.gqlClient.options.headers = {
-    Cookie: `Authorization=${validToken}`,
-  };
+  const validToken = await readyUtils.myTokenToAdmin()
+  readyUtils.gqlClient.options.headers = {
+    Cookie: `Authorization=${validToken}`
+  }
 
-  const respons_no_refresh = await ready_utils.gqlClient.rawRequest(queryMe);
-  const no_cookie = await respons_no_refresh.headers.get('set-cookie');
-  expect(no_cookie).toBe(null);
+  const responsNoRefresh = await readyUtils.gqlClient.rawRequest(queryMe)
+  const noCookie = await responsNoRefresh.headers.get('set-cookie')
+  expect(noCookie).toBe(null)
 
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  const respons_with_refresh = await ready_utils.gqlClient.rawRequest(queryMe);
-  const got_cookie = await respons_with_refresh.headers.get('set-cookie');
-  expect(got_cookie).toBeDefined();
-});
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  const responsWithRefresh = await readyUtils.gqlClient.rawRequest(queryMe)
+  const gotCookie = await responsWithRefresh.headers.get('set-cookie')
+  expect(gotCookie).toBeDefined()
+})

@@ -1,32 +1,32 @@
-const { exec } = require('child_process');
-const dotenv = require('dotenv');
-dotenv.config();
-console.log(`Prisma endpoint: ${process.env['PRISMA_HOST']}`);
+const { exec } = require('child_process')
+const dotenv = require('dotenv')
+dotenv.config()
+console.log(`Prisma endpoint: ${process.env.PRISMA_HOST}`)
 
-const { GraphQLServer } = require('graphql-yoga');
-const { Prisma: PrismaBinding } = require('prisma-binding');
-const cookieParser = require('cookie-parser');
+const { GraphQLServer } = require('graphql-yoga')
+const { Prisma: PrismaBinding } = require('prisma-binding')
+const cookieParser = require('cookie-parser')
 
-const Query = require('./resolvers/query');
-const Mutation = require('./resolvers/mutation');
-const Subscription = require('./resolvers/subscription');
-const Types = require('./resolvers/types');
+const Query = require('./resolvers/query')
+const Mutation = require('./resolvers/mutation')
+const Subscription = require('./resolvers/subscription')
+const Types = require('./resolvers/types')
 
-const { permissions, getJWT } = require('./permissions');
-const { prisma } = require('./generated/prisma-client');
+const { permissions, getJWT } = require('./permissions')
+const { prisma } = require('./generated/prisma-client')
 
 const resolvers = {
   Query,
   Mutation,
   Subscription,
-  ...Types,
-};
+  ...Types
+}
 
 const db = new PrismaBinding({
   typeDefs: './src/generated/prisma.graphql',
   endpoint: `http://${process.env.PRISMA_HOST}:4466`,
-  secret: 'fs1-admin-pass!',
-});
+  secret: 'fs1-admin-pass!'
+})
 
 const server = new GraphQLServer({
   typeDefs: './src/schema/schema.graphql',
@@ -36,9 +36,9 @@ const server = new GraphQLServer({
     ...req,
     prisma,
     jwt: await getJWT(req, prisma),
-    db: db,
-  }),
-});
+    db: db
+  })
+})
 
 const options = {
   port: process.env.NODE_ENV === 'test' ? 0 : 4000,
@@ -47,42 +47,41 @@ const options = {
     origin: [
       'http://localhost:3000',
       'http://greefine.ovh',
-      'http://greefine.fr',
-    ],
+      'http://greefine.fr'
+    ]
   },
   subscriptions: {
     onConnect: async (connectionParams, webSocket) => {
       try {
-        return await webSocket.upgradeReq.headers;
+        return await webSocket.upgradeReq.headers
       } catch (error) {
-        console.error('error', error);
+        console.error('error', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 
-server.express.use(cookieParser());
+server.express.use(cookieParser())
 
-module.exports.serverStart = async function() {
-  const live_server = await server.start(options, ({ port }) =>
+module.exports.serverStart = async function () {
+  const liveServer = await server.start(options, ({ port }) =>
     console.log(`Server is running on http://localhost:${port}/`)
-  );
-  return live_server;
-};
+  )
+  return liveServer
+}
 
-module.exports.resetDB = function() {
+module.exports.resetDB = function () {
   return new Promise((resolve, reject) => {
     exec('prisma reset --force', (err, stdout, stderr) => {
       if (err) {
-        console.error(err);
-        reject();
-        return;
+        console.error(err)
+        return reject(err)
       }
-      if (stdout) console.log(`stdout: ${stdout}`);
-      else if (stderr) console.error(`stderr: ${stderr}`);
-      resolve();
-    });
-  });
-};
+      if (stdout) console.log(`stdout: ${stdout}`)
+      else if (stderr) console.error(`stderr: ${stderr}`)
+      resolve()
+    })
+  })
+}
 
-if (process.env.NODE_ENV !== 'test') module.exports.serverStart();
+if (process.env.NODE_ENV !== 'test') module.exports.serverStart()
