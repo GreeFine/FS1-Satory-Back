@@ -15,7 +15,7 @@ module.exports = {
   deleteEvent (root, { id }, context) {
     return context.prisma.deleteEvent(id)
   },
-  addParticipants (root, { eventId, userId }, context) {
+  addParticipant (root, { eventId, userId }, context) {
     return context.prisma.updateEvent({
       data: {
         participants: {
@@ -29,7 +29,7 @@ module.exports = {
       }
     })
   },
-  removeParticipants (root, { eventId, userId }, context) {
+  removeParticipant (root, { eventId, userId }, context) {
     return context.prisma.updateEvent({
       data: {
         participants: {

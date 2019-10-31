@@ -49,7 +49,8 @@ const permissions = shield(
       updateUser: isAuthenticated,
       createEvent: chain(isAuthenticated, isAdmin),
       deleteEvent: chain(isAuthenticated, isAdmin),
-      addParticipants: chain(isAuthenticated, isAdmin),
+      addParticipant: chain(isAuthenticated, isAdmin),
+      removeParticipant: chain(isAuthenticated, isAdmin),
       createComment: chain(isAuthenticated, canComment),
       deleteComment: chain(isAuthenticated, canComment)
     },

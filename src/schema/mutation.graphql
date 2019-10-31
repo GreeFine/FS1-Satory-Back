@@ -6,8 +6,8 @@ type Mutation {
 
   createEvent(title: String!, content: String!, date: DateTime!): Event!
   deleteEvent(id: ID!): Event!
-  addParticipants(userId: ID!, eventId: ID!): Event!
-  removeParticipants(userId: ID!, eventId: ID!): Event!
+  addParticipant(userId: ID!, eventId: ID!): Event!
+  removeParticipant(userId: ID!, eventId: ID!): Event!
 
   createComment(eventId: ID!, content: String!): Comment!
   deleteComment(id: ID!): Comment!
