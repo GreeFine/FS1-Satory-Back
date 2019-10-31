@@ -20,7 +20,7 @@ async function tokenCheck (req, prisma, authorization, isSocket) {
     try {
       return JWT.verify(authorization, process.env.JWT_SECRET)
     } catch (error) {
-      if (error.name === 'TokenExpiredError') { return refreshToken(prisma, authorization, req) }
+      if (error.name === 'TokenExpiredError') return refreshToken(prisma, authorization, req)
       console.error(error)
       return null
     }
@@ -38,7 +38,6 @@ function userToToken (user) {
 
 function userTokenCreate (user, req) {
   const newToken = userToToken(user)
-
   const token = JWT.sign(newToken, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRATION
   })
@@ -55,16 +54,13 @@ async function checkRefreshToken (prisma, authorization) {
     console.error('Invalid user in checkRefreshToken: ', token.uid, { error })
     return null
   })
-
-  if (user && user.refresh_token === token.refresh_token) { return userToToken(user) }
+  if (user && user.refresh_token === token.refresh_token) return user
   return null
 }
 
 async function refreshToken (prisma, authorization, req) {
   const user = await checkRefreshToken(prisma, authorization)
-  if (user !== null) {
-    return userTokenCreate(user, req)
-  }
+  if (user !== null) return userTokenCreate(user, req)
   await req.response.clearCookie('Authorization')
   return null
 }

@@ -1,7 +1,6 @@
 const { exec } = require('child_process')
 const dotenv = require('dotenv')
 dotenv.config()
-console.log(`Prisma endpoint: ${process.env.PRISMA_HOST}`)
 
 const { GraphQLServer } = require('graphql-yoga')
 const { Prisma: PrismaBinding } = require('prisma-binding')
