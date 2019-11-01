@@ -1,15 +1,21 @@
 const { rule, shield, chain, allow } = require('graphql-shield')
 const { getJWT } = require('./jwt')
 
-const isNotAuthenticated = rule({ cache: 'contextual' })(
-  async (parent, args, ctx, info) => {
-    return ctx.jwt !== null ? new Error('Already connected.') : true
-  }
-)
+function ErrorWithCode (message, code) {
+  const error = new Error(message)
+  error.code = code
+  return error
+}
 
 const isAuthenticated = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    return ctx.jwt === null ? new Error('Not connected.') : true
+    return ctx.jwt === null ? ErrorWithCode('Not connected', 401) : true
+  }
+)
+
+const isNotAuthenticated = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return ctx.jwt !== null ? new Error('Already connected.') : true
   }
 )
 
@@ -50,6 +56,7 @@ const permissions = shield(
     Query: {
       me: isAuthenticated,
       events: chain(isAuthenticated, canReadEvents),
+      myEvents: chain(isAuthenticated, canReadEvents),
       users: chain(isAuthenticated, isAdmin)
     },
     Mutation: {

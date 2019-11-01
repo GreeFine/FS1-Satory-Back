@@ -1,5 +1,6 @@
 type Query {
   events: [Event!]!
+  myEvents: [Event!]!
   users: [User!]!
   me: User!
 }

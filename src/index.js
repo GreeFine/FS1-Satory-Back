@@ -1,3 +1,5 @@
+const { formatError } = require('graphql')
+
 const { exec } = require('child_process')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -38,7 +40,6 @@ const server = new GraphQLServer({
     db: db
   })
 })
-
 const options = {
   port: process.env.NODE_ENV === 'test' ? 0 : 4000,
   cors: {
@@ -57,6 +58,10 @@ const options = {
         console.error('error', error)
       }
     }
+  },
+  formatError: err => {
+    if (err.originalError) return { ...formatError(err), code: err.originalError.code }
+    return formatError(err)
   }
 }
 
