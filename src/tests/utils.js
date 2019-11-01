@@ -6,7 +6,6 @@ const registerMutation = `
   mutation register($username: String!, $password: String!) {
     register(username: $username, password: $password) {
       uid: id
-      refresh_token
       username
       role
     }

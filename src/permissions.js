@@ -45,6 +45,7 @@ const canComment = rule({ cache: 'contextual' })(
 
 const fallbackRule = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
+    if (info.operation.operation === 'subscription') return true
     return new Error("Ooops: this route isn't shielded, we are not gonna let you in. Report this to your maintainer")
   }
 )
@@ -73,15 +74,15 @@ const permissions = shield(
       deleteComment: chain(isAuthenticated, canComment)
     },
     Subscription: {
-      events: chain(isAuthenticated, canReadEvents),
+      events: allow,
       eventsDeleted: chain(isAuthenticated, canReadEvents),
       myEventsComments: chain(isAuthenticated, canReadEvents),
       eventComments: chain(isAuthenticated, canReadEvents),
       commentsDeleted: chain(isAuthenticated, canReadEvents)
     },
     User: allow,
-    Event: chain(isAuthenticated, canReadEvents),
-    Comment: chain(isAuthenticated, canReadEvents)
+    Event: allow,
+    Comment: allow
   },
   { allowExternalErrors: true, debug: process.env.NODE_ENV !== 'production', fallbackRule: fallbackRule }
 )

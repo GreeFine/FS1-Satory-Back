@@ -141,7 +141,7 @@ test('Logout error removing token', async () => {
   await readyUtils.gqlClient.rawRequest(logout).catch(error => {
     errored = true
     expect(error.response.errors).toEqual(
-      readyUtils.errorMessage('Not connected.', 'logout')
+      readyUtils.errorMessage('Not connected', 'logout')
     )
   })
   expect(errored).toBe(true)
