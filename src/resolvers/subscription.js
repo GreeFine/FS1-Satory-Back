@@ -1,5 +1,5 @@
 module.exports = {
-  event: {
+  events: {
     subscribe: (parent, args, ctx, info) => {
       return ctx.db.subscription.event(
         {
@@ -11,7 +11,7 @@ module.exports = {
       )
     }
   },
-  eventDeleted: {
+  eventsDeleted: {
     subscribe: (parent, args, ctx, info) => {
       const selectionSet = '{ previousValues { id title } }'
       return ctx.db.subscription.event(
@@ -27,7 +27,25 @@ module.exports = {
       return payload ? payload.event.previousValues : payload
     }
   },
-  comment: {
+  eventComments: {
+    subscribe: (parent, { eventId }, ctx, info) => {
+      console.log(eventId)
+      return ctx.db.subscription.comment(
+        {
+          where: {
+            mutation_in: ['CREATED', 'UPDATED'],
+            node: {
+              event: {
+                id: eventId
+              }
+            }
+          }
+        },
+        info
+      )
+    }
+  },
+  myEventsComments: {
     subscribe: (parent, args, ctx, info) => {
       return ctx.db.subscription.comment(
         {
@@ -46,7 +64,7 @@ module.exports = {
       )
     }
   },
-  commentDeleted: {
+  commentsDeleted: {
     subscribe: (parent, args, ctx, info) => {
       const selectionSet = '{ previousValues { id title } }'
       return ctx.db.subscription.comment(

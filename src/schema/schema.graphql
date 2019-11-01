@@ -4,7 +4,6 @@
 
 type User {
   id: ID!
-  refresh_token: ID!
   username: String!
   role: String!
   myevents: [Event!]!

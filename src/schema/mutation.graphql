@@ -5,6 +5,7 @@ type Mutation {
   updateUser(id: ID, username: String, password: String, role: Role): User!
 
   createEvent(title: String!, content: String!, date: DateTime!): Event!
+  updateEvent(id: ID!, title: String, content: String, date: DateTime): Event!
   deleteEvent(id: ID!): Event!
   addParticipant(userId: ID!, eventId: ID!): Event!
   removeParticipant(userId: ID!, eventId: ID!): Event!

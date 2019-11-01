@@ -1,4 +1,4 @@
-const { rule, shield, chain } = require('graphql-shield')
+const { rule, shield, chain, allow } = require('graphql-shield')
 const { getJWT } = require('./jwt')
 
 const isNotAuthenticated = rule({ cache: 'contextual' })(
@@ -23,13 +23,23 @@ const isAdmin = rule({ cache: 'contextual' })(
 
 const canReadEvents = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    return ctx.jwt.role !== 'GUEST'
+    return ctx.jwt.role === 'GUEST'
+      ? new Error(`${ctx.jwt.role} do not have access to events`)
+      : true
   }
 )
 
 const canComment = rule({ cache: 'contextual' })(
   async (parent, args, ctx, info) => {
-    return ctx.jwt.role !== 'GUEST'
+    return ctx.jwt.role === 'GUEST'
+      ? new Error(`${ctx.jwt.role} do not have access to comments`)
+      : true
+  }
+)
+
+const fallbackRule = rule({ cache: 'contextual' })(
+  async (parent, args, ctx, info) => {
+    return new Error("Ooops: this route isn't shielded, we are not gonna let you in. Report this to your maintainer")
   }
 )
 
@@ -48,6 +58,7 @@ const permissions = shield(
       logout: isAuthenticated,
       updateUser: isAuthenticated,
       createEvent: chain(isAuthenticated, isAdmin),
+      updateEvent: chain(isAuthenticated, canReadEvents),
       deleteEvent: chain(isAuthenticated, isAdmin),
       addParticipant: chain(isAuthenticated, isAdmin),
       removeParticipant: chain(isAuthenticated, isAdmin),
@@ -55,13 +66,17 @@ const permissions = shield(
       deleteComment: chain(isAuthenticated, canComment)
     },
     Subscription: {
-      event: chain(isAuthenticated, canReadEvents),
-      eventDeleted: chain(isAuthenticated, canReadEvents),
-      comment: chain(isAuthenticated, canReadEvents),
-      commentDeleted: chain(isAuthenticated, canReadEvents)
-    }
+      events: chain(isAuthenticated, canReadEvents),
+      eventsDeleted: chain(isAuthenticated, canReadEvents),
+      myEventsComments: chain(isAuthenticated, canReadEvents),
+      eventComments: chain(isAuthenticated, canReadEvents),
+      commentsDeleted: chain(isAuthenticated, canReadEvents)
+    },
+    User: allow,
+    Event: chain(isAuthenticated, canReadEvents),
+    Comment: chain(isAuthenticated, canReadEvents)
   },
-  { allowExternalErrors: true, debug: true }
+  { allowExternalErrors: true, debug: process.env.NODE_ENV !== 'production', fallbackRule: fallbackRule }
 )
 
 module.exports = {
