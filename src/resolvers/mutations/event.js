@@ -29,7 +29,7 @@ module.exports = {
     })
   },
   deleteEvent (root, { id }, context) {
-    return context.prisma.deleteEvent(id)
+    return context.prisma.deleteEvent({ id })
   },
   addParticipant (root, { eventId, userId }, context) {
     return context.prisma.updateEvent({
