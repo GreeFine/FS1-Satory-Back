@@ -66,7 +66,7 @@ test('Invalid user register', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Invalid Username', 'register'),
+        readyUtils.errorMessage('Invalid Username', 'register', 400),
       );
     });
   expect(errored).toBe(true);
@@ -80,7 +80,7 @@ test('Invalid password register', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Invalid Password', 'register'),
+        readyUtils.errorMessage('Invalid Password', 'register', 400),
       );
     });
   expect(errored).toBe(true);
@@ -106,7 +106,7 @@ test('Login Invalid Username', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Invalid username', 'login'),
+        readyUtils.errorMessage('Invalid username', 'login', 400),
       );
     });
   expect(errored).toBe(true);
@@ -119,7 +119,7 @@ test('Login Invalid password', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Invalid password', 'login'),
+        readyUtils.errorMessage('Invalid password', 'login', 400),
       );
     });
   expect(errored).toBe(true);
@@ -141,7 +141,7 @@ test('Logout error removing token', async () => {
   await readyUtils.gqlClient.rawRequest(logout).catch((error) => {
     errored = true;
     expect(error.response.errors).toEqual(
-      readyUtils.errorMessage('Not connected', 'logout'),
+      readyUtils.errorMessage('Not connected', 'logout', 401),
     );
   });
   expect(errored).toBe(true);
@@ -177,7 +177,7 @@ test('Update user with invalid data', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Invalid Username', 'updateUser'),
+        readyUtils.errorMessage('Invalid Username', 'updateUser', 400),
       );
     });
 
@@ -188,7 +188,7 @@ test('Update user with invalid data', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        readyUtils.errorMessage('Only an admin can update roles', 'updateUser'),
+        readyUtils.errorMessage('Only an admin can update roles', 'updateUser', 403),
       );
     });
 
@@ -202,6 +202,7 @@ test('Update user with invalid data', async () => {
         readyUtils.errorMessage(
           'Only an admin can update another user',
           'updateUser',
+          403,
         ),
       );
     });

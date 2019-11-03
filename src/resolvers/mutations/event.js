@@ -1,3 +1,5 @@
+const ErrorWithCode = require('../../errors');
+
 module.exports = {
   createEvent(root, { title, content, date }, context) {
     return context.prisma.createEvent({
@@ -23,7 +25,7 @@ module.exports = {
       });
     }
     const eventAuthor = await context.prisma.event({ id }).author();
-    if (eventAuthor.id !== context.jwt.uid) return Error(`You are not the author of event:${id}`);
+    if (eventAuthor.id !== context.jwt.uid) return ErrorWithCode(`You are not the author of event:${id}`);
     return context.prisma.updateEvent({
       where: { id },
       data: eventArgs,

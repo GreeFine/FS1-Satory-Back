@@ -1,14 +1,19 @@
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const { userTokenCreate } = require('../../jwt');
+const ErrorWithCode = require('../../errors');
 
 function validateUser(username, password) {
   if (
     username !== undefined
     && (!validator.isAlphanumeric(username)
       || !validator.isLength(username, { min: 3, max: 20 }))
-  ) { throw new Error('Invalid Username'); }
-  if (password !== undefined && !validator.isLength(password, { min: 6 })) { throw new Error('Invalid Password'); }
+  ) {
+    throw new ErrorWithCode('Invalid Username', 400);
+  }
+  if (password !== undefined && !validator.isLength(password, { min: 6 })) {
+    throw new ErrorWithCode('Invalid Password', 400);
+  }
 }
 
 module.exports = {
@@ -16,13 +21,13 @@ module.exports = {
     const user = await context.prisma.user({ username });
 
     if (!user) {
-      throw new Error('Invalid username');
+      throw ErrorWithCode('Invalid username', 400);
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error('Invalid password');
+      throw new ErrorWithCode('Invalid password', 400);
     }
 
     userTokenCreate(user, context);
@@ -48,8 +53,9 @@ module.exports = {
   },
   updateUser: async (root, args, context) => {
     if ((args.role || args.id) && context.jwt.role !== 'ADMIN') {
-      return Error(
+      return ErrorWithCode(
         `Only an admin can update ${args.role ? 'roles' : 'another user'}`,
+        403,
       );
     }
 

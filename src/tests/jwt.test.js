@@ -39,19 +39,7 @@ test('Mess JWT data', async () => {
     .catch((error) => {
       errored = true;
       expect(error.response.errors).toEqual(
-        [
-          {
-            message: 'Not connected',
-            locations: [
-              {
-                line: 3,
-                column: 5,
-              },
-            ],
-            path: ['updateUser'],
-            code: 401,
-          },
-        ],
+        readyUtils.errorMessage('Not connected', 'updateUser', 401),
       );
     });
 

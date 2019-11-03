@@ -46,7 +46,7 @@ module.exports = (async () => {
       delete token.exp;
       return `Authorization=${JWT.sign(token, secret, { expiresIn: '4s' })}`;
     },
-    errorMessage(message, path) {
+    errorMessage(message, path, code) {
       return [
         {
           message,
@@ -57,6 +57,7 @@ module.exports = (async () => {
             },
           ],
           path: [path],
+          code,
         },
       ];
     },
