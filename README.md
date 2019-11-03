@@ -24,7 +24,16 @@ Using `docker-compose up -d`
 
 > You can remove the `-d` to be attached to the output
 
+> **Important** this start the a local server if you want to deploy your serveur as production you can look at the ***"Deployement"*** part of the document
+
 Prisma provide a client that can be used to manage the server, to use it you need to install [Node](https://nodejs.org/en/download/package-manager/), and [Prisma Client](https://www.prisma.io/docs/prisma-client/)
+
+
+### Admin and Playground pages
+
+Prisma and graphql-yoga have some pages for us to use to debug and administrate the application:
+The [playground]('http://localhost:4000/) exposed by default on the port 4000 of your machine
+And the [admin panel]('http://localhost:4466/_admin) expose on port 4466 and the route `_admin`
 
 #### Some Command that can be used
 
@@ -76,6 +85,20 @@ The security and permissions are handled with [JWT](./src/jwt.js) and [graphql-s
 - [graphql-yoga](https://github.com/prisma-labs/graphql-yoga)
 - [graphql-shield](https://github.com/maticzav/graphql-shield)
 - [Jest](https://jestjs.io/)
+- [Docker](https://www.docker.com/)
+
+## Deployement
+
+You will need to install and setup [traefik](https://docs.traefik.io/providers/docker/) and [docker swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/)
+
+
+>The deploy use *greefine/fs1-satory-back* as image you can build it your self from the [Dockerfile](./Dockerfile):
+`docker build -t greefine/fs1-satory-back  .`
+
+Once done you can deploy the app with
+```
+docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml <name for your stack>
+```
 
 ## Authors
 

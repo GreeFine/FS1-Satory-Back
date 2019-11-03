@@ -8,7 +8,7 @@ services:
     deploy:
       labels:
         traefik.port: '4000'
-        traefik.frontend.rule: 'Host: api.greefine.app'
+        traefik.frontend.rule: 'Host: api.greefine.fr'
         traefik.docker.network: 'webgateway'
 
 networks:
