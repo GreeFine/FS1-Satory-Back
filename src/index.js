@@ -26,7 +26,8 @@ const resolvers = {
 const db = new PrismaBinding({
   typeDefs: './src/generated/prisma.graphql',
   endpoint: `http://${process.env.PRISMA_HOST}:4466`,
-  secret: 'fs1-admin-pass!'
+  secret: 'fs1-admin-pass!',
+  debug: process.env.NODE_ENV !== 'production'
 })
 
 const server = new GraphQLServer({
@@ -46,8 +47,7 @@ const options = {
     credentials: true,
     origin: [
       'http://localhost:3000',
-      'http://greefine.ovh',
-      'http://greefine.fr'
+      'https://greefine.fr'
     ]
   },
   subscriptions: {
