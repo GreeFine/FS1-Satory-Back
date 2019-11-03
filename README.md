@@ -28,12 +28,11 @@ Using `docker-compose up -d`
 
 Prisma provide a client that can be used to manage the server, to use it you need to install [Node](https://nodejs.org/en/download/package-manager/), and [Prisma Client](https://www.prisma.io/docs/prisma-client/)
 
-
 ### Admin and Playground pages
 
 Prisma and graphql-yoga have some pages for us to use to debug and administrate the application:
-The [playground]('http://localhost:4000/) exposed by default on the port 4000 of your machine
-And the [admin panel]('http://localhost:4466/_admin) expose on port 4466 and the route `_admin`
+The [Playground]('http://localhost:4000/) exposed by default on the port 4000 of your machine
+And the [Admin panel]('http://localhost:4466/_admin) expose on port 4466 and the route `_admin`
 
 #### Some Command that can be used
 

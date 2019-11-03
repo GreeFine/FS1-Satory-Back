@@ -56,7 +56,7 @@ test('Register user', async () => {
     username,
     password,
   });
-  expect(response).toEqual({ register: { username, role: 'GUEST' } });
+  expect(response).toEqual({ register: { username, role: 'USER' } });
 });
 
 test('Invalid user register', async () => {
@@ -92,7 +92,7 @@ test('Login', async () => {
     password,
   });
   expect(response.data).toEqual({
-    login: { username, role: 'GUEST' },
+    login: { username, role: 'USER' },
   });
   expect(response.headers).toBeDefined();
   const setCookie = await response.headers.get('set-cookie');
@@ -159,7 +159,7 @@ test('Update user', async () => {
   expect(response.data).toEqual({
     updateUser: {
       username: newUsername,
-      role: 'GUEST',
+      role: 'USER',
     },
   });
 });

@@ -3,7 +3,7 @@ type User {
   refresh_token: ID!
   username: String! @unique
   password: String!
-  role: Role! @default(value: GUEST)
+  role: Role! @default(value: USER)
   myevents: [Event!]! @relation(name: "EventAuthor")
   events: [Event!]! @relation(name: "Participants")
 
