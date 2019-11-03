@@ -1,83 +1,76 @@
 module.exports = {
   events: {
-    subscribe: (parent, args, ctx, info) => {
-      return ctx.db.subscription.event(
-        {
-          where: {
-            mutation_in: ['CREATED', 'UPDATED']
-          }
+    subscribe: (parent, args, ctx, info) => ctx.db.subscription.event(
+      {
+        where: {
+          mutation_in: ['CREATED', 'UPDATED'],
         },
-        info
-      )
-    }
+      },
+      info,
+    ),
   },
   eventsDeleted: {
-    subscribe: (parent, args, ctx, info) => {
-      const selectionSet = '{ previousValues { id title } }'
+    subscribe: (parent, args, ctx) => {
+      const selectionSet = '{ previousValues { id title } }';
       return ctx.db.subscription.event(
         {
           where: {
-            mutation_in: ['DELETED']
-          }
+            mutation_in: ['DELETED'],
+          },
         },
-        selectionSet
-      )
+        selectionSet,
+      );
     },
-    resolve: (payload, args, ctx, info) => {
-      return payload ? payload.event.previousValues : payload
-    }
+    resolve: (payload) => (payload ? payload.event.previousValues : payload),
   },
   eventComments: {
     subscribe: (parent, { eventId }, ctx, info) => {
-      console.log(eventId)
+      console.log(eventId);
       return ctx.db.subscription.comment(
         {
           where: {
             mutation_in: ['CREATED', 'UPDATED'],
             node: {
               event: {
-                id: eventId
-              }
-            }
-          }
+                id: eventId,
+              },
+            },
+          },
         },
-        info
-      )
-    }
+        info,
+      );
+    },
   },
   myEventsComments: {
-    subscribe: (parent, args, ctx, info) => {
-      return ctx.db.subscription.comment(
-        {
-          where: {
-            mutation_in: ['CREATED', 'UPDATED'],
-            node: {
-              event: {
-                author: {
-                  id: ctx.jwt.uid
-                }
-              }
-            }
-          }
+    subscribe: (parent, args, ctx, info) => ctx.db.subscription.comment(
+      {
+        where: {
+          mutation_in: ['CREATED', 'UPDATED'],
+          node: {
+            event: {
+              author: {
+                id: ctx.jwt.uid,
+              },
+            },
+          },
         },
-        info
-      )
-    }
+      },
+      info,
+    ),
   },
   commentsDeleted: {
-    subscribe: (parent, args, ctx, info) => {
-      const selectionSet = '{ previousValues { id title } }'
+    subscribe: (parent, args, ctx) => {
+      const selectionSet = '{ previousValues { id title } }';
       return ctx.db.subscription.comment(
         {
           where: {
-            mutation_in: ['DELETED']
-          }
+            mutation_in: ['DELETED'],
+          },
         },
-        selectionSet
-      )
+        selectionSet,
+      );
     },
-    resolve: (payload, args, ctx, info) => {
-      return payload ? payload.comment.previousValues : payload // sanity check
-    }
-  }
-}
+    resolve: (payload) => (payload ? payload.comment.previousValues : payload), // sanity check
+
+  },
+};

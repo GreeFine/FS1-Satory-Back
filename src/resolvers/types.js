@@ -1,50 +1,50 @@
 module.exports = {
   User: {
-    myevents (root, args, context) {
+    myevents(root, args, context) {
       return context.prisma
         .user({
-          id: root.id
+          id: root.id,
         })
-        .myevents()
+        .myevents();
     },
-    events (root, args, context) {
+    events(root, args, context) {
       return context.prisma
         .user({
-          id: root.id
+          id: root.id,
         })
-        .events()
-    }
+        .events();
+    },
   },
   Event: {
-    author (root, args, context) {
+    author(root, args, context) {
       return context.prisma
         .event({
-          id: root.id
+          id: root.id,
         })
-        .author()
+        .author();
     },
-    participants (root, args, context) {
+    participants(root, args, context) {
       return context.prisma
         .event({
-          id: root.id
+          id: root.id,
         })
-        .participants()
+        .participants();
     },
-    comments (root, args, context) {
+    comments(root, args, context) {
       return context.prisma
         .event({
-          id: root.id
+          id: root.id,
         })
-        .comments()
-    }
+        .comments();
+    },
   },
   Comment: {
-    author (root, args, context) {
+    author(root, args, context) {
       return context.prisma
         .comment({
-          id: root.id
+          id: root.id,
         })
-        .author()
-    }
-  }
-}
+        .author();
+    },
+  },
+};
