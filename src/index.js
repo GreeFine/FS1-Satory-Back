@@ -69,12 +69,12 @@ const options = {
 
 server.express.use(cookieParser());
 
-module.exports = async function serverStart() {
+async function serverStart() {
   const liveServer = await server.start(options, ({ port }) => console.log(`Server is running on http://localhost:${port}/`));
   return liveServer;
-};
+}
 
-module.exports = function resetDB() {
+function resetDB() {
   return new Promise((resolve, reject) => {
     exec('prisma reset --force', (err, stdout, stderr) => {
       if (err) {
@@ -86,6 +86,8 @@ module.exports = function resetDB() {
       return resolve();
     });
   });
-};
+}
 
-if (process.env.NODE_ENV !== 'test') module.exports.serverStart();
+if (process.env.NODE_ENV !== 'test') serverStart();
+
+module.exports = { serverStart, resetDB };
