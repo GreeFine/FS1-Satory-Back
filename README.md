@@ -9,16 +9,20 @@ The server is containered and deployed with Docker
 
 ### Prerequisites
 
-Docker and docker-compose are the only mandatory dependance you need to start the project localy
+Node, Docker, docker-compose and Prisma are the only mandatory dependance you need to start the project localy
 
 Official install page for:
 
 - Docker: https://docs.docker.com/install/
 - docker-compose: https://docs.docker.com/compose/install/
+- Node: https://nodejs.org/en/download/package-manager/
+- Prisma Client: https://www.prisma.io/docs/prisma-client/
 
 ### Starting the application
 
-You can use the [docker-compose.yml](./docker-compose.yml) file to start the project
+Edit the .env to change the secrets and config to your needs
+
+Use the [docker-compose.yml](./docker-compose.yml) file to start the project
 
 Using `docker-compose up -d`
 
@@ -26,15 +30,17 @@ Using `docker-compose up -d`
 
 > **Important** this start the a local server if you want to deploy your serveur as production you can look at the ***"Deployement"*** part of the document
 
-Prisma provide a client that can be used to manage the server, to use it you need to install [Node](https://nodejs.org/en/download/package-manager/), and [Prisma Client](https://www.prisma.io/docs/prisma-client/)
-
 ### Admin and Playground pages
 
 Prisma and graphql-yoga have some pages for us to use to debug and administrate the application:
 The [Playground]('http://localhost:4000/) exposed by default on the port 4000 of your machine
 And the [Admin panel]('http://localhost:4466/_admin) expose on port 4466 and the route `_admin`
 
+This page will ask you for a token you can get it with `prisma token`
+
 #### Some Command that can be used
+
+Prisma Client is used to manage the server
 
 ```bash
 Usage: prisma COMMAND
