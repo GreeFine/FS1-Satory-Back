@@ -1,11 +1,12 @@
 const ErrorWithCode = require('../../errors');
 
 module.exports = {
-  createEvent(root, { title, content, date }, context) {
+  createEvent(root, { title, content, date, picture }, context) {
     return context.prisma.createEvent({
       title,
       content,
       date,
+      picture,
       author: {
         connect: { id: context.jwt.uid },
       },

@@ -34,13 +34,14 @@ module.exports = {
 
     return user;
   },
-  register: async (root, { username, password }, context) => {
+  register: async (root, { username, password, picture }, context) => {
     validateUser(username, password);
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await context.prisma.createUser({
       username,
       password: hashedPassword,
+      picture,
       refresh_token: Math.random()
         .toString(36)
         .substr(2, 9),

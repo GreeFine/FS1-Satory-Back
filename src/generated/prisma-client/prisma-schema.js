@@ -253,6 +253,7 @@ type Event {
   title: String!
   content: String!
   author: User!
+  picture: String
   participants(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   date: DateTime!
@@ -271,6 +272,7 @@ input EventCreateInput {
   title: String!
   content: String!
   author: UserCreateOneWithoutMyeventsInput!
+  picture: String
   participants: UserCreateManyWithoutEventsInput
   comments: CommentCreateManyWithoutEventInput
   date: DateTime!
@@ -295,6 +297,7 @@ input EventCreateWithoutAuthorInput {
   id: ID
   title: String!
   content: String!
+  picture: String
   participants: UserCreateManyWithoutEventsInput
   comments: CommentCreateManyWithoutEventInput
   date: DateTime!
@@ -305,6 +308,7 @@ input EventCreateWithoutCommentsInput {
   title: String!
   content: String!
   author: UserCreateOneWithoutMyeventsInput!
+  picture: String
   participants: UserCreateManyWithoutEventsInput
   date: DateTime!
 }
@@ -314,6 +318,7 @@ input EventCreateWithoutParticipantsInput {
   title: String!
   content: String!
   author: UserCreateOneWithoutMyeventsInput!
+  picture: String
   comments: CommentCreateManyWithoutEventInput
   date: DateTime!
 }
@@ -330,6 +335,8 @@ enum EventOrderByInput {
   title_DESC
   content_ASC
   content_DESC
+  picture_ASC
+  picture_DESC
   date_ASC
   date_DESC
   createdAt_ASC
@@ -342,6 +349,7 @@ type EventPreviousValues {
   id: ID!
   title: String!
   content: String!
+  picture: String
   date: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -390,6 +398,20 @@ input EventScalarWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   date: DateTime
   date_not: DateTime
   date_in: [DateTime!]
@@ -441,6 +463,7 @@ input EventUpdateInput {
   title: String
   content: String
   author: UserUpdateOneRequiredWithoutMyeventsInput
+  picture: String
   participants: UserUpdateManyWithoutEventsInput
   comments: CommentUpdateManyWithoutEventInput
   date: DateTime
@@ -449,12 +472,14 @@ input EventUpdateInput {
 input EventUpdateManyDataInput {
   title: String
   content: String
+  picture: String
   date: DateTime
 }
 
 input EventUpdateManyMutationInput {
   title: String
   content: String
+  picture: String
   date: DateTime
 }
 
@@ -497,6 +522,7 @@ input EventUpdateOneRequiredWithoutCommentsInput {
 input EventUpdateWithoutAuthorDataInput {
   title: String
   content: String
+  picture: String
   participants: UserUpdateManyWithoutEventsInput
   comments: CommentUpdateManyWithoutEventInput
   date: DateTime
@@ -506,6 +532,7 @@ input EventUpdateWithoutCommentsDataInput {
   title: String
   content: String
   author: UserUpdateOneRequiredWithoutMyeventsInput
+  picture: String
   participants: UserUpdateManyWithoutEventsInput
   date: DateTime
 }
@@ -514,6 +541,7 @@ input EventUpdateWithoutParticipantsDataInput {
   title: String
   content: String
   author: UserUpdateOneRequiredWithoutMyeventsInput
+  picture: String
   comments: CommentUpdateManyWithoutEventInput
   date: DateTime
 }
@@ -589,6 +617,20 @@ input EventWhereInput {
   content_ends_with: String
   content_not_ends_with: String
   author: UserWhereInput
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   participants_every: UserWhereInput
   participants_some: UserWhereInput
   participants_none: UserWhereInput
@@ -699,6 +741,7 @@ type User {
   username: String!
   password: String!
   role: Role!
+  picture: String
   myevents(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
   createdAt: DateTime!
@@ -717,6 +760,7 @@ input UserCreateInput {
   username: String!
   password: String!
   role: Role
+  picture: String
   myevents: EventCreateManyWithoutAuthorInput
   events: EventCreateManyWithoutParticipantsInput
 }
@@ -742,6 +786,7 @@ input UserCreateWithoutEventsInput {
   username: String!
   password: String!
   role: Role
+  picture: String
   myevents: EventCreateManyWithoutAuthorInput
 }
 
@@ -751,6 +796,7 @@ input UserCreateWithoutMyeventsInput {
   username: String!
   password: String!
   role: Role
+  picture: String
   events: EventCreateManyWithoutParticipantsInput
 }
 
@@ -770,6 +816,8 @@ enum UserOrderByInput {
   password_DESC
   role_ASC
   role_DESC
+  picture_ASC
+  picture_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -782,6 +830,7 @@ type UserPreviousValues {
   username: String!
   password: String!
   role: Role!
+  picture: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -847,6 +896,20 @@ input UserScalarWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -891,6 +954,7 @@ input UserUpdateDataInput {
   username: String
   password: String
   role: Role
+  picture: String
   myevents: EventUpdateManyWithoutAuthorInput
   events: EventUpdateManyWithoutParticipantsInput
 }
@@ -900,6 +964,7 @@ input UserUpdateInput {
   username: String
   password: String
   role: Role
+  picture: String
   myevents: EventUpdateManyWithoutAuthorInput
   events: EventUpdateManyWithoutParticipantsInput
 }
@@ -909,6 +974,7 @@ input UserUpdateManyDataInput {
   username: String
   password: String
   role: Role
+  picture: String
 }
 
 input UserUpdateManyMutationInput {
@@ -916,6 +982,7 @@ input UserUpdateManyMutationInput {
   username: String
   password: String
   role: Role
+  picture: String
 }
 
 input UserUpdateManyWithoutEventsInput {
@@ -954,6 +1021,7 @@ input UserUpdateWithoutEventsDataInput {
   username: String
   password: String
   role: Role
+  picture: String
   myevents: EventUpdateManyWithoutAuthorInput
 }
 
@@ -962,6 +1030,7 @@ input UserUpdateWithoutMyeventsDataInput {
   username: String
   password: String
   role: Role
+  picture: String
   events: EventUpdateManyWithoutParticipantsInput
 }
 
@@ -1047,6 +1116,20 @@ input UserWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   myevents_every: EventWhereInput
   myevents_some: EventWhereInput
   myevents_none: EventWhereInput

@@ -4,6 +4,7 @@ type User {
   username: String! @unique
   password: String!
   role: Role! @default(value: USER)
+  picture: String
   myevents: [Event!]! @relation(name: "EventAuthor")
   events: [Event!]! @relation(name: "Participants")
 
@@ -16,6 +17,7 @@ type Event {
   title: String!
   content: String!
   author: User! @relation(link: INLINE, name: "EventAuthor")
+  picture: String
   participants: [User!]! @relation(link: TABLE, name: "Participants")
   comments: [Comment!]!
     @relation(link: TABLE, name: "Comments", onDelete: CASCADE)

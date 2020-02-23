@@ -6,6 +6,7 @@ type User {
   id: ID!
   username: String!
   role: String!
+  picture: String
   myevents: [Event!]!
   events: [Event!]!
   createdAt: DateTime!
@@ -18,6 +19,7 @@ type Event {
   content: String!
   date: DateTime!
   author: User!
+  picture: String
   participants: [User!]!
   comments: [Comment!]!
   createdAt: DateTime!
