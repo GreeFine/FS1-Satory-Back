@@ -16,7 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "prisma-binding": "^2.3.16",
     "prisma-client-lib": "^1.34.8",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
